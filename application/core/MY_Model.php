@@ -26,10 +26,10 @@
           *
           * @return array
           */
-          function GetById($id) {
+          function GetById($id, $tabela) {
             if(is_null($id))
               return false;
-            $this->db->where('id', $id);
+            $this->db->where('id_'.$tabela, $id);
             $query = $this->db->get($this->table);
             if ($query->num_rows() > 0) {
               return $query->row_array();
@@ -46,7 +46,7 @@
           *
           * @return array
           */
-          function GetAll($sort = 'id', $order = 'asc') {
+          function GetAll($sort = 'id', $order = 'desc') {
             $this->db->order_by($sort, $order);
             $query = $this->db->get($this->table);
             if ($query->num_rows() > 0) {
@@ -64,10 +64,10 @@
           *
           * @return boolean
           */
-          function Atualizar($id, $data) {
+          function Atualizar($id, $data, $tabela) {
             if(is_null($id) || !isset($data))
               return false;
-            $this->db->where('id', $id);
+            $this->db->where('id_'.$tabela, $id);
             return $this->db->update($this->table, $data);
           }
           /**
@@ -78,10 +78,10 @@
           *
           * @return boolean
           */
-          function Excluir($id) {
+          function Excluir($id, $tabela) {
             if(is_null($id))
               return false;
-            $this->db->where('id', $id);
+            $this->db->where('id_'.$tabela, $id);
             return $this->db->delete($this->table);
           }
         

@@ -10,9 +10,9 @@ class CategoriasController extends CI_Controller{
     public function Index()
 	{
 		// Recupera os contatos através do model
-		$contatos = $this->CategoriaModel->GetAll('categoria');
+		$categorias = $this->CategoriaModel->GetAll('categoria');
 		// Passa os contatos para o array que será enviado à home
-		$dados['categorias'] =$this->CategoriaModel->Formatar($contatos);
+		$dados['categorias'] =$this->CategoriaModel->Formatar($categorias);
 		// Chama a home enviando um array de dados a serem exibidos
 		$this->template->load('layout', 'categorias/listar', $dados);
     }
@@ -30,9 +30,7 @@ class CategoriasController extends CI_Controller{
 		$dados['categorias'] =$this->CategoriaModel->Formatar($categorias);
 		// Executa o processo de validação do formulário
 		//$validacao = self::Validar();
-		// Verifica o status da validação do formulário
-		// Se não houverem erros, então insere no banco e informa ao usuário
-		// caso contrário informa ao usuários os erros de validação
+
 		//if($validacao){
 			// Recupera os dados do formulário
 			$categoria = $this->input->post();
@@ -44,7 +42,6 @@ class CategoriasController extends CI_Controller{
 			}else{
 				$this->session->set_flashdata('success', 'Contato inserido com sucesso.');
 				// Redireciona o usuário para a home
-				
 			}
 		/*}else{
 			$this->session->set_flashdata('error', validation_errors('<p>','</p>'));
@@ -57,63 +54,62 @@ class CategoriasController extends CI_Controller{
      */
 	public function Editar(){
 		// Recupera o ID do registro - através da URL - a ser editado
-		$id = $this->uri->segment(2);
+		$id = $this->uri->segment(3);
 		// Se não foi passado um ID, então redireciona para a home
 		if(is_null($id))
 			redirect();
 		// Recupera os dados do registro a ser editado
-		$dados['contato'] = $this->contatos_model->GetById($id);
+		$dados['categoria'] = $this->CategoriaModel->GetById($id, 'categoria');
 		// Carrega a view passando os dados do registro
-		$this->load->view('editar',$dados);
+		$this->template->load('layout', 'categorias/alterar', $dados);
 	}
 	/**
      * Processa o formulário para atualizar os dados
      */
 	public function Atualizar(){
 		// Realiza o processo de validação dos dados
-		$validacao = self::Validar('update');
-		// Verifica o status da validação do formulário
-		// Se não houverem erros, então insere no banco e informa ao usuário
-		// caso contrário informa ao usuários os erros de validação
-		if($validacao){
+        $validacao = self::Validar('update');
+		if(!$validacao){
 			// Recupera os dados do formulário
-			$contato = $this->input->post();
+            $categoria = $this->input->post();
+           
 			// Atualiza os dados no banco recuperando o status dessa operação
-			$status = $this->contatos_model->Atualizar($contato['id'],$contato);
+            $status = $this->CategoriaModel->Atualizar($categoria['id_categoria'], $categoria, 'categoria');
 			// Checa o status da operação gravando a mensagem na seção
 			if(!$status){
-				$dados['contato'] = $this->contatos_model->GetById($contato['id']);
-				$this->session->set_flashdata('error', 'Não foi possível atualizar o contato.');
+				$dados['categoria'] = $this->CategoriaModel->GetById($categoria['id_categoria'], 'categoria');
+                $this->session->set_flashdata('error', 'Não foi possível atualizar o contato.');
+                $this->template->load('layout', 'categorias/alterar', $dados);
 			}else{
 				$this->session->set_flashdata('success', 'Contato atualizado com sucesso.');
-				// Redireciona o usuário para a home
-				redirect();
+                // Redireciona o usuário para a home
+                $this->template->load('layout', 'inicio');
 			}
 		}else{
-			$this->session->set_flashdata('error', validation_errors());
+            $this->session->set_flashdata('error', validation_errors());
+            $this->template->load('layout', 'inicio');
 		}
-		// Carrega a view para edição
-		$this->load->view('editar',$dados);
 	}
 	/**
      * Realiza o processo de exclusão dos dados
      */
 	public function Excluir(){
 		// Recupera o ID do registro - através da URL - a ser editado
-		$id = $this->uri->segment(2);
+		$id = $this->uri->segment(3);
 		// Se não foi passado um ID, então redireciona para a home
 		if(is_null($id))
 			redirect();
 		// Remove o registro do banco de dados recuperando o status dessa operação
-		$status = $this->contatos_model->Excluir($id);
+		$status = $this->CategoriaModel->Excluir($id, 'categoria');
 		// Checa o status da operação gravando a mensagem na seção
 		if($status){
 			$this->session->set_flashdata('success', '<p>Contato excluído com sucesso.</p>');
 		}else{
 			$this->session->set_flashdata('error', '<p>Não foi possível excluir o contato.</p>');
-		}
-		// Redirecionao o usuário para a home
-		redirect();
+        }
+        
+        // Recupera os contatos através do model
+		$this->Index();
 	}
 	/**
 	* Valida os dados do formulário
@@ -122,28 +118,28 @@ class CategoriasController extends CI_Controller{
 	*
 	* @return boolean
 	*/
-	/*private function Validar($operacao = 'insert'){
+	private function Validar($operacao = 'insert'){
 		// Com base no parâmetro passado
 		// determina as regras de validação
 		switch($operacao){
 			case 'insert':
 				$rules['nome'] = array('trim', 'required', 'min_length[3]');
-				$rules['email'] = array('trim', 'required', 'valid_email', 'is_unique[contatos.email]');
+				//$rules['email'] = array('trim', 'required', 'valid_email', 'is_unique[contatos.email]');
 				break;
 			case 'update':
 				$rules['nome'] = array('trim', 'required', 'min_length[3]');
-				$rules['email'] = array('trim', 'required', 'valid_email');
+				//$rules['email'] = array('trim', 'required', 'valid_email');
 				break;
 			default:
 				$rules['nome'] = array('trim', 'required', 'min_length[3]');
-				$rules['email'] = array('trim', 'required', 'valid_email', 'is_unique[contatos.email]');
+				//$rules['email'] = array('trim', 'required', 'valid_email', 'is_unique[contatos.email]');
 				break;
 		}
 		$this->form_validation->set_rules('nome', 'Nome', $rules['nome']);
-		$this->form_validation->set_rules('email', 'Email', $rules['email']);
+		//$this->form_validation->set_rules('email', 'Email', $rules['email']);
 		// Executa a validação e retorna o status
 		return $this->form_validation->run();
-	}*/
+	}
 
 
 

@@ -12,7 +12,7 @@
         <form method="post" action="<?=base_url('categoria/cadastrar')?>" enctype="multipart/form-data">
             <div class="col-md-4">
                 <div>
-                <label>Nome:</label>
+                    <label>Nome:</label>
                     <input class="form-control" type="text" name="categoria" value="<?=set_value('nome')?>" required/>
                 </div>
                 <div>

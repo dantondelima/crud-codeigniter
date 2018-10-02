@@ -18,9 +18,9 @@
         <?php
             foreach($categorias as $c): ?>
             <tr>
-                <td><?= $c['categoria'] ?></td>
-                <td><a href="<?php echo base_url() . 'categoria/alterar/' . $c['id_categoria'] ?>">Editar</a></td>
-                <td><a href="<?php echo base_url() . 'categoria/excluir/' . $c['id_categoria'] ?>">Excluir</a></td>
+                <td><?= $c['subcategoria'] ?></td>
+                <td><a href="<?php echo base_url() . 'subcategoria/alterar/' . $c['id_subcategoria'] ?>">Editar</a></td>
+                <td><a href="<?php echo base_url() . 'subcategoria/excluir/' . $c['id_subcategoria'] ?>">Excluir</a></td>
             </tr>
         <?php
             endforeach

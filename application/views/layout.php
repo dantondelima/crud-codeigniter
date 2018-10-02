@@ -39,7 +39,7 @@
                                   <a href="#"><i class="fa fa-bars fa-lg"></i> Categorias <span class="arrow"></span></a>
                                 </li>  
                                 <ul class="sub-menu collapse" id="categorias">
-                                    <li><a href="<?=base_url().'categorias/cadastrar'?>">Cadastrar Categoria</a></li>
+                                    <li><a href="<?=base_url().'categoria/cadastro'?>">Cadastrar Categoria</a></li>
                                     <li><a href="<?=base_url().'categoria'?>">Listar Categorias</a></li>
                                 </ul>
 
@@ -48,8 +48,8 @@
                                   <a href="#"><i class="fa fa-bars fa-lg"></i> Subcategorias <span class="arrow"></span></a>
                                 </li>
                                 <ul class="sub-menu collapse" id="new">
-                                    <li><a href="#">Cadastrar Categoriia</a></li>
-                                    <li><a href="#">Listar Categorias</a></li>
+                                    <li><a href="subcategoria/cadastro">Cadastrar subcategoria</a></li>
+                                    <li><a href="subcategoria">Listar subcategorias</a></li>
                                 </ul>
                                  <li>
                                   <a href="#"><i class="fa fa-info-circle fa-lg"></i> Sobre</a>

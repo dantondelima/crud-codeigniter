@@ -17,13 +17,13 @@
         *
         * @return array
         */
-        function Formatar($contatos){
-          if($contatos){
-            for($i = 0; $i < count($contatos); $i++){
-              $contatos[$i]['editar_url'] = base_url('editar')."/".$contatos[$i]['id_categoria'];
-              $contatos[$i]['excluir_url'] = base_url('excluir')."/".$contatos[$i]['id_categoria'];
+        function Formatar($categorias){
+          if($categorias){
+            for($i = 0; $i < count($categorias); $i++){
+              $categorias[$i]['editar_url'] = base_url('categoria/alterar')."/".$categorias[$i]['id_categoria'];
+              $categorias[$i]['excluir_url'] = base_url('categoria/excluir')."/".$categorias[$i]['id_categoria'];
             }
-            return $contatos;
+            return $categorias;
           } else {
             return false;
           }

@@ -9,4 +9,5 @@
 <body>
     <h1 style="text-align: center;margin-top:200px;">CRUD - CodeIgniter</h1>
 </body>
+
 </html>
