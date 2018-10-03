@@ -11,19 +11,16 @@
     <table class="table">
     <thead >
         <tr>
-            <th>Subcategoria</th>
             <th>Categoria</th>
-            <th>Ação</th>
         </tr>
     </thead>
     <tbody>
         <?php
-            foreach($subcategorias as $sc): ?>
+            foreach($categorias as $c): ?>
             <tr>
-                <td><?= $sc['subcategoria'] ?></td>
-                <td><?= $sc['categoria'] ?></td>
-                <td><a href="<?php echo base_url() . 'subcategoria/alterar/' . $sc['id_subcategoria'] ?>">Editar</a></td>
-                <td><a href="<?php echo base_url() . 'subcategoria/excluir/' . $sc['id_subcategoria'] ?>">Excluir</a></td>
+                <td><?= $c['categoria'] ?></td>
+                <td><a href="<?php echo base_url() . 'categoria/alterar/' . $c['id_categoria'] ?>">Editar</a></td>
+                <td><a href="<?php echo base_url() . 'categoria/excluir/' . $c['id_categoria'] ?>">Excluir</a></td>
             </tr>
         <?php
             endforeach

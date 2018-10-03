@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<? echo base_url('includes/bootstrap/css/bootstrap.min.css') ?>">
     <!-- Latest compiled and minified JavaScript -->
     <script src="<? echo base_url('includes/bootstrap/js/bootstrap.min.js') ?>"></script>
+    
     <title>CRUD Codeigniter</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?php include_once 'navbar.php'; ?>
@@ -32,7 +33,7 @@
                                 </li>
                                 <ul class="sub-menu collapse" id="users">
                                     <!-- class="active" no li -->
-                                    <li><a href="<?=base_url().'usuario/cadastrar'?>" id="formCadastro">Cadastrar Usuario</a></li>
+                                    <li><a href="<?=base_url().'usuario/cadastro'?>" id="formCadastro">Cadastrar Usuario</a></li>
                                     <li><a href="<?=base_url().'usuario'?>">Listar Usuarios</a></li>
                                 </ul>
                                 <li data-toggle="collapse" data-target="#categorias" class="collapsed">

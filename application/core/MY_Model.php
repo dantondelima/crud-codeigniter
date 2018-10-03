@@ -46,7 +46,7 @@
           *
           * @return array
           */
-          function GetAll($sort = 'id', $order = 'desc') {
+          function GetAll($sort = 'id', $order = 'asc') {
             $this->db->order_by($sort, $order);
             $query = $this->db->get($this->table);
             if ($query->num_rows() > 0) {

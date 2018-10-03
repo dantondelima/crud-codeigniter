@@ -15,6 +15,15 @@ $route['categoria/excluir/(:num)'] = "CategoriasController/Excluir/$1";
 $route['subcategoria'] = "SubcategoriasController/index";
 $route['subcategoria/cadastro'] = "SubcategoriasController/Form";
 $route['subcategoria/cadastrar'] = "SubcategoriasController/Salvar";
+$route['subcategoria/categoria'] = "SubcategoriasController/Categoria";
 $route['subcategoria/alterar/(:num)'] = "SubcategoriasController/Editar/$1";
 $route['subcategoria/atualizar'] = "SubcategoriasController/Atualizar";
 $route['subcategoria/excluir/(:num)'] = "SubcategoriasController/Excluir/$1";
+
+$route['usuario'] = "UsuariosController/index";
+$route['usuario/cadastro'] = "UsuariosController/Form";
+$route['usuario/cadastrar'] = "UsuariosController/Salvar";
+$route['usuario/categoria'] = "UsuariosController/Categoria";
+$route['usuario/alterar/(:num)'] = "UsuariosController/Editar/$1";
+$route['usuario/atualizar'] = "UsuariosController/Atualizar";
+$route['usuario/excluir/(:num)'] = "UsuariosController/Excluir/$1";
