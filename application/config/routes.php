@@ -24,6 +24,10 @@ $route['usuario'] = "UsuariosController/index";
 $route['usuario/cadastro'] = "UsuariosController/Form";
 $route['usuario/cadastrar'] = "UsuariosController/Salvar";
 $route['usuario/categoria'] = "UsuariosController/Categoria";
+$route['usuario/subcategoria/(:num)'] = "UsuariosController/Subcategoria/$1";
 $route['usuario/alterar/(:num)'] = "UsuariosController/Editar/$1";
 $route['usuario/atualizar'] = "UsuariosController/Atualizar";
 $route['usuario/excluir/(:num)'] = "UsuariosController/Excluir/$1";
+
+$route['recortar'] = "UsuariosController/Recortar";
+$route['visualizacao'] = 'UsuariosController/Visualizacao';
