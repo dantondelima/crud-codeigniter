@@ -1,9 +1,16 @@
 <?php
 class UsuariosController extends CI_Controller{
   
+    public function __construct(){
+        parent::__construct();
+        // Carrega as libraries necessárias: session, upload e image_lib
+        $this->load->library(['session','upload','image_lib']);
+    }
+
     function index(){
         /*carrega a view */
         $this->template->load('layout', 'inicio');
+        
     }
 
     function Form(){
@@ -27,11 +34,11 @@ class UsuariosController extends CI_Controller{
         // Aplica as configurações para a library upload
         $this->upload->initialize($configUpload);
 
-        if ( ! $this->upload->do_upload('imagem'))
+        if ( !$this->upload->do_upload('imagem'))
         {
             // Recupera as mensagens de erro e envia o usuário para a home
             $data= array('error' => $this->upload->display_errors());
-            $this->load->view('home',$data);
+            $this->template->load('layout', 'teste', $data);
         }
         else
         {
@@ -92,11 +99,23 @@ class UsuariosController extends CI_Controller{
                 redirect('visualizacao');
             }
         }
+        $this->load->library('ckeditor');
+        $this->load->library('ckfinder');
+
+        $this->ckeditor->basePath = base_url().'assets/ckeditor/';
+        $this->ckeditor->config['toolbar'] = array(
+                        array( 'Source', '-', 'Bold', 'Italic', 'Underline', '-','Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList' )
+                                                            );
+        $this->ckeditor->config['language'] = 'it';
+        $this->ckeditor->config['width'] = '730px';
+        $this->ckeditor->config['height'] = '300px';
+
+        $this->ckfinder->SetupCKEditor($this->ckeditor,'assets/ckfinder/'); 
     }
     
 
     public function Visualizacao() {
-        $this->load->view('visualizacao');
+        $this->template->load('layout', 'visualizacao');
     }
 
     private function CalculaPercetual($dimensoes){
@@ -114,5 +133,5 @@ class UsuariosController extends CI_Controller{
         // Retorna os valores a serem utilizados no processo de recorte da imagem
         return $dimensoes;
     }
-    
+
 }

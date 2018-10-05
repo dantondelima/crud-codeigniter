@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Adicionar</title>
     <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
-    <script src="<?=base_url('includes/jcrop/js/jquery.Jcrop.js')?>"></script>
+    <script src="<?=base_url('assets/jcrop/js/jquery.Jcrop.js')?>"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
@@ -99,6 +99,8 @@
                 </div>
             </div>
         </form>
+    </div>
+    <div class="crop-div">
     </div>
 </body>
 </html>

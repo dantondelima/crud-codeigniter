@@ -4,7 +4,7 @@
     class UserModel extends MY_Model{
         function __construct() {
             parent::__construct();
-            $this->table = 'subcategorias';
+            $this->table = 'users';
         }
 
         function selectSubcategoria($id) {

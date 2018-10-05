@@ -31,3 +31,5 @@ $route['usuario/excluir/(:num)'] = "UsuariosController/Excluir/$1";
 
 $route['recortar'] = "UsuariosController/Recortar";
 $route['visualizacao'] = 'UsuariosController/Visualizacao';
+
+$route['datatable'] = "UsuariosController/Datatable";

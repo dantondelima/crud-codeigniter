@@ -5,10 +5,10 @@
     <meta name="robots" content="noindex, nofollow">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="<? echo base_url('includes/bootstrap/css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<? echo base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
     <!-- Latest compiled and minified JavaScript -->
-    <script src="<? echo base_url('includes/bootstrap/js/bootstrap.min.js') ?>"></script>
-    
+    <script src="<?=base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
+    <script src="<?=base_url('assets/js/scripts.js')?>"></script>
     <title>CRUD Codeigniter</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?php include_once 'navbar.php'; ?>
