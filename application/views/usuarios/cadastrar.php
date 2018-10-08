@@ -65,7 +65,7 @@
 <body>
     <h1>Cadastro de usuário</h1>
     <div class="row"> 
-        <form method="post" action="<?=base_url('categoria/cadastrar')?>" enctype="multipart/form-data">
+        <form method="post" action="<?=base_url('recorte')?>" enctype="multipart/form-data">
             <div class="col-md-4">
                 <div>
                     <label>Nome:</label>

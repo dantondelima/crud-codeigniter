@@ -24,6 +24,22 @@ class UsuariosController extends CI_Controller{
         echo json_encode($dados);
     }
     
+    public function Salvar(){
+		$validacao = self::Validar();
+		if($validacao){
+			$uuario = $this->input->post();
+			$status = $this->UserModel->Inserir($usuario);
+			if(!$status){
+				$this->session->set_flashdata('error', 'Não foi possível inserir o contato.');
+			}else{
+				$this->session->set_flashdata('success', 'Contato inserido com sucesso.');
+				$this->template->load('layout', 'inicio');			}
+		}else{
+			$this->session->set_flashdata('error', validation_errors('<p>','</p>'));
+			return var_dump($usuario);
+        }
+    }
+
     public function Recortar(){
         $configUpload['upload_path']   = './uploads/';
         // Tipos de imagem permitidos
@@ -42,61 +58,29 @@ class UsuariosController extends CI_Controller{
         }
         else
         {
-            // Recupera os dados da imagem
             $dadosImagem = $this->upload->data();
- 
-            // Calcula os tamanhos de ponto de corte e posição
-            // de forma proporcional em relação ao tamanho da
-            // imagem original
             $tamanhos = $this->CalculaPercetual($this->input->post());
- 
-            // Define as configurações para o recorte da imagem
-            // Biblioteca a ser utilizada
             $configCrop['image_library'] = 'gd2';
-            //Path da imagem a ser recortada
             $configCrop['source_image']  = $dadosImagem['full_path'];
-            // Diretório onde a imagem recortada será gravada
             $configCrop['new_image']  = './uploads/crops/';
-            // Proporção
             $configCrop['maintain_ratio']= FALSE;
-            // Qualidade da imagem
-            $configCrop['quality']             = 100;
-            // Tamanho do recorte
+            $configCrop['quality'] = 100;
             $configCrop['width']  = $tamanhos['wcrop'];
             $configCrop['height'] = $tamanhos['hcrop'];
-            // Ponto de corte (eixos x e y)
-            $configCrop['x_axis']        = $tamanhos['x'];
-            $configCrop['y_axis']        = $tamanhos['y'];
- 
-            // Aplica as configurações para a library image_lib
+            $configCrop['x_axis'] = $tamanhos['x'];
+            $configCrop['y_axis'] = $tamanhos['y'];
             $this->image_lib->initialize($configCrop);
- 
-            // Verifica se o recorte foi efetuado ou não
-            // Em caso de erro carrega a home exibindo as mensagens
-            // Em caso de sucesso envia o usuário para a tela
-            // de visualização do recorte
             if ( ! $this->image_lib->crop())
             {
-                // Recupera as mensagens de erro e envia o usuário para a home
                 $data = array('error' => $this->image_lib->display_errors());
                 $this->load->view('home',$data);
             }
             else
             {
-                // Define a URL da imagem gerada após o recorte
                 $urlImagem = base_url('uploads/crops/'.$dadosImagem['file_name']);
- 
-                // Grava a informação na sessão
-                $this->session->set_flashdata('urlImagem', $urlImagem);
- 
-                // Grava os dados da imagem recortada na sessão
-                $this->session->set_flashdata('dadosImagem', $dadosImagem);
- 
-                // Grava os dados da imagem original na sessão
-                $this->session->set_flashdata('dadosCrop', $tamanhos);
- 
-                // Redireciona o usuário para a tela de visualização dos dados
-                redirect('visualizacao');
+                unlink($dadosImagem['full_path']);
+                $this->template->load('layout', 'teste');
+                return $urlImagem;
             }
         }
         $this->load->library('ckeditor');
@@ -108,8 +92,7 @@ class UsuariosController extends CI_Controller{
                                                             );
         $this->ckeditor->config['language'] = 'it';
         $this->ckeditor->config['width'] = '730px';
-        $this->ckeditor->config['height'] = '300px';
-
+        $this->ckeditor->config['height'] = '200px';
         $this->ckfinder->SetupCKEditor($this->ckeditor,'assets/ckfinder/'); 
     }
     
