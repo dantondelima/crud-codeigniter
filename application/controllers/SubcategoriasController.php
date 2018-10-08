@@ -18,25 +18,19 @@ class SubcategoriasController extends CI_Controller{
     }
 
     public function Salvar(){
-		//$validacao = self::Validar();
-
-		//if($validacao){
-			// Recupera os dados do formulário
+		$validacao = self::Validar();
+		if($validacao){
 			$subcategoria = $this->input->post();
-			// Insere os dados no banco recuperando o status dessa operação
 			$status = $this->SubcategoriaModel->Inserir($subcategoria);
-			// Checa o status da operação gravando a mensagem na seção
 			if(!$status){
 				$this->session->set_flashdata('error', 'Não foi possível inserir o contato.');
 			}else{
 				$this->session->set_flashdata('success', 'Contato inserido com sucesso.');
-				// Redireciona o usuário para a home
-			}
-		/*}else{
+				$this->template->load('layout', 'inicio');			}
+		}else{
 			$this->session->set_flashdata('error', validation_errors('<p>','</p>'));
-        }*/
-		// Carrega a home
-		$this->template->load('layout', 'inicio');
+			return var_dump($subcategoria);
+        }
     }
 
     public function Editar(){

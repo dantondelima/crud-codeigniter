@@ -10,7 +10,7 @@
     <script type="text/javascript">
         $.getJSON("<?= base_url().'subcategoria/categoria'?>", function(dados){
             if (dados.length > 0){
-                var option = "<option value=''>Selecione categoria</option>"; 
+                var option = "<option value=''>Selecione uma categoria</option>"; 
                 $.each(dados, function(i, obj){
                     option += "<option value='"+obj.id_categoria+"'>"+
                         obj.categoria+"</option>";
@@ -19,7 +19,7 @@
             $("#categoria").html(option).show();
         });
     </script>
-    <h1>Cadastro de categoria</h1>
+    <h1>Cadastro de subcategoria</h1>
     <div class="row"> 
         <form method="post" action="<?=base_url('subcategoria/cadastrar')?>" enctype="multipart/form-data">
             <div class="col-md-4">
@@ -30,7 +30,6 @@
                 <div>
                     <div>
                     <select class="form-control" name="id_categoria" id="categoria" placeholder="Categoria">
-                        <option value="">Selecione uma categoria</option>
                     </select> 
                     </div>
                     <input style="margin-top:10px" class="btn btn-primary" type="submit" value="Adicionar"/>
