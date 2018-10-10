@@ -19,6 +19,7 @@ class SubcategoriasController extends CI_Controller{
 
     public function Salvar(){
 		$validacao = self::Validar();
+
 		if($validacao){
 			$subcategoria = $this->input->post();
 			$status = $this->SubcategoriaModel->Inserir($subcategoria);
@@ -29,7 +30,6 @@ class SubcategoriasController extends CI_Controller{
 				$this->template->load('layout', 'inicio');			}
 		}else{
 			$this->session->set_flashdata('error', validation_errors('<p>','</p>'));
-			return var_dump($subcategoria);
         }
     }
 
@@ -97,25 +97,19 @@ class SubcategoriasController extends CI_Controller{
     }
 
     private function Validar($operacao = 'insert'){
-		// Com base no parâmetro passado
-		// determina as regras de validação
 		switch($operacao){
 			case 'insert':
-				$rules['nome'] = array('trim', 'required', 'min_length[3]');
-				//$rules['email'] = array('trim', 'required', 'valid_email', 'is_unique[contatos.email]');
+				$rules['subcategoria'] = array('trim', 'required', 'min_length[3]');
 				break;
 			case 'update':
-				$rules['nome'] = array('trim', 'required', 'min_length[3]');
-				//$rules['email'] = array('trim', 'required', 'valid_email');
+				$rules['subcategoria'] = array('trim', 'required', 'min_length[3]');
 				break;
 			default:
-				$rules['nome'] = array('trim', 'required', 'min_length[3]');
-				//$rules['email'] = array('trim', 'required', 'valid_email', 'is_unique[contatos.email]');
+				$rules['subcategoria'] = array('trim', 'required', 'min_length[3]');
 				break;
 		}
-		$this->form_validation->set_rules('nome', 'Nome', $rules['nome']);
+		$this->form_validation->set_rules('subcategoria', 'subcategoria', $rules['subcategoria']);
 		//$this->form_validation->set_rules('email', 'Email', $rules['email']);
-		// Executa a validação e retorna o status
 		return $this->form_validation->run();
 	}
 }

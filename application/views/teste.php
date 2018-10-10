@@ -1,9 +1,10 @@
 <html>
 <head>
+<script src="<?=base_url('assets/jcrop/js/jquery.Jcrop.js')?>"></script>
 <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
-    <script src="<?=base_url('assets/jcrop/js/jquery.Jcrop.js')?>"></script>
+    
     <link rel="stylesheet" href="<?=base_url('assets/css/plugins/jquery.Jcrop.css')?>" type="text/css" />
-    <script src="<?=base_url('assets/js/funcionapls.js')?>"></script>
+    <script src="<?=base_url('assets/js/scripts.js')?>"></script>
     <script type="text/javascript" src="<?=base_url('assets/ckeditor/ckeditor.js')?>"></script>
 <!--<script type="text/javascript" src="<?=base_url('assets/ckfinder/ckfinder.js')?>"></script>-->
 

@@ -15,8 +15,6 @@ $(document).ready(function(){
           image.Jcrop({
               onChange: atualizaCoordenadas,
               onSelect: atualizaCoordenadas,
-              aspectRatio: 1
-            
           });
           defineTamanhoImagem(e.target.result, image);
       }

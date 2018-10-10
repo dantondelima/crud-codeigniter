@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Adicionar</title>
-    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
-    <script src="<?=base_url('assets/jcrop/js/jquery.Jcrop.js')?>"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="<?=base_url('assets/css/plugins/jquery.Jcrop.css')?>" type="text/css" />
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script src="<?=base_url('assets/jcrop/js/jquery.Jcrop.js')?>"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+    <script src="<?=base_url('assets/js/scripts.js')?>"></script>
+    <script type="text/javascript" src="<?=base_url('assets/ckeditor/ckeditor.js')?>"></script>
+
     
     <script>
     $( function() {
@@ -64,29 +68,29 @@
 </head>
 <body>
     <h1>Cadastro de usuário</h1>
-    <div class="row"> 
-        <form method="post" action="<?=base_url('recorte')?>" enctype="multipart/form-data">
-            <div class="col-md-4">
-                <div>
+    <div class="row col-md-10 center-block"> 
+        <form method="post" action="<?=base_url('usuario/cadastrar')?>" enctype="multipart/form-data">
+            <div class="col-md-12">
+                <div class="form-group">
                     <label>Nome:</label>
                     <input class="form-control" type="text" name="nome" required/>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>Email:</label>
                     <input class="form-control" type="text" name="email" required/>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>Data de Nascimento:</label>
                     <input class="form-control" type="text" id="datepicker" name="data_nasc" required/>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>Categoria:</label>
                     <div>
                     <select class="form-control" name="categoria" id="categoria" placeholder="Categoria">
                     </select> 
                     </div>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>Subcategoria:</label>
                     <div>
                     <select class="form-control" name="subcategoria" id="subcategoria" placeholder="Subcategoria">
@@ -94,13 +98,40 @@
                     </select> 
                     </div>
                 </div>
-                <div>
-                    <input style="margin-top:10px" class="btn btn-primary" type="submit" value="Adicionar"/>
+    </div>
+    <div class="crop-div" style="margin-left:30px;">
+        <div class="row">
+		<div class="">
+			<?php if(isset($error)):?>
+				<div class="alert alert-warning"><?=$error?></div>
+			<?php endif; ?>
+			<form action="<?=base_url('recortar')?>" method="POST" enctype="multipart/form-data">
+				<div class="form-group">
+					<label class="col-md-8 alert alert-info">Selecione uma imagem</label>
+					<input type="file" name="imagem" id="seleciona-imagem"/>
+					<div id="imagem-box">
+					</div>
+				</div>
+		</div>
+		<div class="col-md-12">			
+			<input type="hidden" id="x" name="x" />
+			<input type="hidden" id="y" name="y" />
+			<input type="hidden" id="wcrop" name="wcrop" />
+			<input type="hidden" id="hcrop" name="hcrop" />
+			<input type="hidden" id="wvisualizacao" name="wvisualizacao" />
+			<input type="hidden" id="hvisualizacao" name="hvisualizacao" />
+			<input type="hidden" id="woriginal" name="woriginal" />
+			<input type="hidden" id="horiginal" name="horiginal" />
+
+			<textarea cols="80" id="edi" name="desc" rows="5"></textarea>
+    </div>
+            <div>
+            <input class="btn btn-primary btn-block" style="margin-bottom:45px;margin-top:15px;" type="submit" value="Cadastrar"/>
                 </div>
             </div>
         </form>
-    </div>
-    <div class="crop-div">
-    </div>
+    <script>
+	CKEDITOR.replace('edi');
+</script> 
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 class CategoriasController extends CI_Controller{
-    public function Index()
+    public function index()
 	{
 		$categorias = $this->CategoriaModel->GetAll('categoria');
 		$dados['categorias'] =$this->CategoriaModel->Formatar($categorias);
@@ -29,23 +29,15 @@ class CategoriasController extends CI_Controller{
 			$this->template->load('layout', 'categorias/cadastrar');
 		}
 	}
-	/**
-     * Carrega a view para edição dos dados
-     */
+
 	public function Editar(){
-		// Recupera o ID do registro - através da URL - a ser editado
 		$id = $this->uri->segment(3);
-		// Se não foi passado um ID, então redireciona para a home
 		if(is_null($id))
 			redirect();
-		// Recupera os dados do registro a ser editado
 		$dados['categoria'] = $this->CategoriaModel->GetById($id, 'categoria');
-		// Carrega a view passando os dados do registro
 		$this->template->load('layout', 'categorias/alterar', $dados);
 	}
-	/**
-     * Processa o formulário para atualizar os dados
-     */
+
 	public function Atualizar(){
 		$validacao = self::Validar('update');
 		

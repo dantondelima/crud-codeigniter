@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
     <!-- Latest compiled and minified JavaScript -->
     <script src="<?=base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
-    <script src="<?=base_url('assets/js/scripts.js')?>"></script>
     <title>CRUD Codeigniter</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?php include_once 'navbar.php'; ?>
