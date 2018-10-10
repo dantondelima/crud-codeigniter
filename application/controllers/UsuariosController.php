@@ -7,9 +7,11 @@ class UsuariosController extends CI_Controller{
     }
 
     function index(){
-        $this->template->load('layout', 'inicio');
+        $usuarios = $this->UserModel->GetAll('nome');
+		$dados['usuarios'] = $this->UserModel->Formatar($usuarios);
+        $this->template->load('layout', 'usuarios/listar', $dados);
     }
-
+    
     function Form(){
         $this->template->load('layout', 'usuarios/cadastrar');
     }
@@ -21,18 +23,17 @@ class UsuariosController extends CI_Controller{
     }
     
     public function Salvar(){
-        
         $validacao = self::Validar();
         $usuario = $this->input->post();
 		if($validacao){
-            $post = [
+             $post = [
                 'nome' => $usuario['nome'],
                 'email' => $usuario['email'],
                 'data_nasc' => $usuario['data_nasc'],
                 'categoria' => $usuario['categoria'],
                 'subcategoria' => $usuario['subcategoria'],
                 'imagem' => $this->Recortar(),
-                'desc' => $usuario['desc']
+                'descricao' => $usuario['desc']
             ];
 			
 			$status = $this->UserModel->Inserir($post);
@@ -40,15 +41,43 @@ class UsuariosController extends CI_Controller{
 				$this->session->set_flashdata('error', 'Não foi possível inserir o contato.');
 			}else{
 				$this->session->set_flashdata('success', 'Contato inserido com sucesso.');
-				$this->template->load('layout', 'inicio');			}
+                $this->template->load('layout', 'inicio');			
+            }
 		}else{
-			$this->session->set_flashdata('error', validation_errors('<p>','</p>'));
-			return var_dump($usuario);
+            $this->session->set_flashdata('error', validation_errors('<p>','</p>'));
+            var_dump($this);
+			$this->template->load('layout', 'inicio');
         }
     }
 
+    public function Editar(){
+		$id = $this->uri->segment(3);
+		if(is_null($id))
+            redirect();
+        $dados['usuario'] = $this->UserModel->GetById($id, 'usuario');
+		$this->template->load('layout', 'usuarios/alterar', $dados);
+	}
+
+    public function Atualizar(){
+		$validacao = self::Validar('update');
+		if($validacao){
+			$usuario = $this->input->post();
+            $status = $this->UserModel->Atualizar($usuario['id_usuario'], $usuario, 'usuario');
+			if(!$status){
+				$dados['categoria'] = $this->CategoriaModel->GetById($categoria['id_categoria'], 'categoria');
+                $this->session->set_flashdata('error', 'Não foi possível atualizar o contato.');
+                $this->template->load('layout', 'inicio');
+			}else{
+				$this->session->set_flashdata('success', 'Contato atualizado com sucesso.');
+                $this->template->load('layout', 'inicio');
+			}
+		}else{
+            $this->session->set_flashdata('error', validation_errors());
+        }
+	}
+
     public function Recortar(){
-        $configUpload['upload_path']   = './uploads/';
+        $configUpload['upload_path']   = './assets/uploads/';
         $configUpload['allowed_types'] = 'jpg|png';
         $configUpload['encrypt_name']  = TRUE;
  
@@ -65,7 +94,7 @@ class UsuariosController extends CI_Controller{
             $tamanhos = $this->CalculaPercetual($this->input->post());
             $configCrop['image_library'] = 'gd2';
             $configCrop['source_image']  = $dadosImagem['full_path'];
-            $configCrop['new_image']  = './uploads/crops/';
+            $configCrop['new_image']  = './assets/uploads/crops/';
             $configCrop['maintain_ratio']= FALSE;
             $configCrop['quality'] = 100;
             $configCrop['width']  = $tamanhos['wcrop'];
@@ -76,7 +105,6 @@ class UsuariosController extends CI_Controller{
             if ( ! $this->image_lib->crop())
             {
                 $data = array('error' => $this->image_lib->display_errors());
-                $this->load->view('home',$data);
             }
             else
             {
@@ -85,32 +113,17 @@ class UsuariosController extends CI_Controller{
                 return $urlImagem;
             }
         }
-        $this->load->library('ckeditor');
-        $this->load->library('ckfinder');
-
-        $this->ckeditor->basePath = base_url().'assets/ckeditor/';
-        $this->ckeditor->config['toolbar'] = array(
-                        array( 'Source', '-', 'Bold', 'Italic', 'Underline', '-','Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList' )
-                                                            );
-        $this->ckeditor->config['language'] = 'it';
-        $this->ckeditor->config['width'] = '730px';
-        $this->ckeditor->config['height'] = '200px';
-        $this->ckfinder->SetupCKEditor($this->ckeditor,'assets/ckfinder/'); 
+        
     }
 
     private function CalculaPercetual($dimensoes){
-        // Verifica se a largura da imagem original é
-        // maior que a da área de recorte, se for calcula o tamanho proporcional
         if($dimensoes['woriginal'] > $dimensoes['wvisualizacao']){
             $percentual = $dimensoes['woriginal'] / $dimensoes['wvisualizacao'];
- 
             $dimensoes['x'] = round($dimensoes['x'] * $percentual);
             $dimensoes['y'] = round($dimensoes['y'] * $percentual);
             $dimensoes['wcrop'] = round($dimensoes['wcrop'] * $percentual);
             $dimensoes['hcrop'] = round($dimensoes['hcrop'] * $percentual);
         }
- 
-        // Retorna os valores a serem utilizados no processo de recorte da imagem
         return $dimensoes;
     }
 
@@ -125,7 +138,6 @@ class UsuariosController extends CI_Controller{
 				break;
 			case 'update':
                 $rules['nome'] = array('trim', 'required', 'min_length[3]', 'max_length[100]');
-                $rules['email'] = array('trim', 'required', 'min_length[3]', 'max_length[100]','is_unique[users.email]');
                 $rules['data_nasc'] = array('trim', 'required', 'min_length[3]', 'max_length[20]');
                 $rules['categoria'] = array('trim', 'required');
                 $rules['subcategoria'] = array('trim', 'required');
@@ -138,14 +150,28 @@ class UsuariosController extends CI_Controller{
                 $rules['subcategoria'] = array('trim', 'required');
                 break;
 		}
-		$this->form_validation->set_rules('nome', 'Usuario', $rules['nome']);
-        $this->form_validation->set_rules('email', 'E-mail', $rules['email']);
+        $this->form_validation->set_rules('nome', 'Usuario', $rules['nome']);
+        if($operacao == 'insert')
+            $this->form_validation->set_rules('email', 'E-mail', $rules['email']);
+
         $this->form_validation->set_rules('data_nasc', 'Data', $rules['data_nasc']);
         $this->form_validation->set_rules('categoria', 'Categoria', $rules['categoria']);
         $this->form_validation->set_rules('subcategoria', 'Subcategoria', $rules['subcategoria']);
 		return $this->form_validation->run();
     }
     
+    public function Excluir(){
+		$id = $this->uri->segment(3);
+		if(is_null($id))
+			redirect();
+		$status = $this->UserModel->Excluir($id, 'usuario');
+		if($status){
+			$this->session->set_flashdata('success', '<p>Contato excluído com sucesso.</p>');
+		}else{
+			$this->session->set_flashdata('error', '<p>Não foi possível excluir o contato.</p>');
+        }
+        $this->index();
+    }
 
     /*public function PegaDados(){
         $pegadados = $this->user_model->criar_datatable();
@@ -172,7 +198,41 @@ class UsuariosController extends CI_Controller{
         echo json_encode($output);
     }
     
-    
+    public function Atualizar(){
+            $urlImagem = $this->Recortar();
+                if ($urlImagem != NULL) {
+                    unlink(substr($this->input->post('post_foto_antiga'), 35));
+                }
+                else 
+                {
+                    $urlImagem = $this->input->post("post_foto_antiga");
+                }
+            $validacao = self::Validar('update');
+                $post = [
+                   'usuario_fk' => $this->input->post('usuario_fk'), 
+                   'post_titulo' => $this->input->post('post_titulo'), 
+                   'post_conteudo' => $this->input->post('post_titulo'), 
+                   'post_foto' => $urlImagem
+                ];
+                $id = intval($this->input->post('post_id'));
+                if($validacao){
+                    $status = $this->posts_model->Atualizar($id, $post, 'post');
+                    if(!$status){
+                        $dados['post'] = $this->posts_model->GetIdJoin($id, 'post');
+                        $this->session->set_flashdata('error', 'Não foi possível atualizar o Post.');
+                        $this->template->load('template', 'posts/form-alteracao', $dados);
+                    }else{
+                        $this->session->set_flashdata('success', 'Post atualizado com sucesso.');
+                        $dados = $this->posts_model->GetByTitulo($post['post_titulo']);
+                        $this->EnviarEmailPosts($dados['usuario_nome'], $dados['usuario_email'], $dados['post_conteudo'], $dados['post_titulo'], $dados['post_foto'], 'Post atualizado com sucesso');
+                        redirect(base_url('posts'));
+                    }
+                }else{
+                    $dados['post'] = $this->posts_model->GetIdJoin($id, 'post');
+                    $this->session->set_flashdata('error', validation_errors());
+                    $this->template->load('template', 'posts/form-alteracao', $dados);
+                }
+            }
     
     */
 

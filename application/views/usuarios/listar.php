@@ -11,16 +11,26 @@
     <table class="table">
     <thead >
         <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Data de Nascimento</th>
             <th>Categoria</th>
+            <th>Subcategoria</th>
+            <th>Imagem</th>
         </tr>
     </thead>
     <tbody>
         <?php
-            foreach($categorias as $c): ?>
+            foreach($usuarios as $usuario): ?>
             <tr>
-                <td><?= $c['categoria'] ?></td>
-                <td><a href="<?php echo base_url() . 'categoria/alterar/' . $c['id_categoria'] ?>">Editar</a></td>
-                <td><a href="<?php echo base_url() . 'categoria/excluir/' . $c['id_categoria'] ?>">Excluir</a></td>
+                <td><?= $usuario['nome'] ?></td>
+                <td><?= $usuario['email'] ?></td>
+                <td><?= $usuario['data_nasc'] ?></td>
+                <td><?= $usuario['categoria'] ?></td>
+                <td><?= $usuario['subcategoria'] ?></td>
+                <td><img src="<?= $usuario['imagem'] ?>" alt="thumb"></td>
+                <td><a href="<?php echo base_url() . 'usuario/alterar/' . $usuario['id_usuario'] ?>">Editar</a></td>
+                <td><a href="<?php echo base_url() . 'usuario/excluir/' . $usuario['id_usuario'] ?>">Excluir</a></td>
             </tr>
         <?php
             endforeach

@@ -16,11 +16,20 @@
             return $dados->result_array();
           }
           
+          function selectCategoria() {
+            $this->db
+            ->select("*")
+            ->from("categorias")
+            ->join('categorias', 'users.categoria = categorias.id_categoria');
+            $dados = $this->db->get();
+            return $dados->result_array();
+          }
+
           function Formatar($categorias){
             if($categorias){
               for($i = 0; $i < count($categorias); $i++){
-                $categorias[$i]['editar_url'] = base_url('subcategoria/alterar')."/".$categorias[$i]['id_subcategoria'];
-                $categorias[$i]['excluir_url'] = base_url('subcategoria/excluir')."/".$categorias[$i]['id_subcategoria'];
+                $categorias[$i]['editar_url'] = base_url('usuario/alterar')."/".$categorias[$i]['id_usuario'];
+                $categorias[$i]['excluir_url'] = base_url('usuario/excluir')."/".$categorias[$i]['id_usuario'];
               }
               return $categorias;
             } else {

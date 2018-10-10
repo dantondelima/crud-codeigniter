@@ -1,7 +1,7 @@
 $(document).ready(function(){
-
-  $("#seleciona-imagem").on('change', function(){
-    if (typeof (FileReader) != "undefined") {
+  $("#seleciona-imagem").on('change', function () {
+    $('.img').remove();
+  if (typeof (FileReader) != "undefined") {
       var image_holder = $("#imagem-box");
       image_holder.empty();
 
@@ -9,8 +9,7 @@ $(document).ready(function(){
       reader.onload = function (e) {
           var image = $("<img />", {
               "src": e.target.result,
-              "class": "thumb-image",
-              "style": "width: 600px;"
+              "class": "thumb-image"
           }).appendTo(image_holder);
           image.Jcrop({
               onChange: atualizaCoordenadas,
@@ -23,20 +22,15 @@ $(document).ready(function(){
   } else{
       alert("Este navegador nao suporta FileReader.");
   }
-  });
+});
 
-  // Ao tentar clicar o botão recortar
-  // verifica se foi definida alguma área de corte
-  $('#recortar-imagem').click(function(){
-    if (parseInt($('#wcrop').val())) return true;
-    alert('Selecione a área de corte para continuar.');
-    return false;
-  });
+$('#recortar-imagem').click(function(){
+  if (parseInt($('#wcrop').val())) return true;
+  alert('Selecione a área de corte para continuar.');
+  return false;
+});
 })
 
-// Faz a atualização das coordenadas em relação ao ponto de corte
-// cada vez que esse é modificado
-// É chamado nos eventos onSelect e onChange do jCrop
 function atualizaCoordenadas(c)
 {
   $('#x').val(c.x);
@@ -45,16 +39,14 @@ function atualizaCoordenadas(c)
   $('#hcrop').val(c.h);
 };
 
-// Faz a verificação e define o tamanho da imagem original
-// e da imagem na área de visualização para o recorte
 function defineTamanhoImagem(imgOriginal, imgVisualizacao) {
-  var image = new Image();
-  image.src = imgOriginal;
+var image = new Image();
+image.src = imgOriginal;
 
-  image.onload = function() {
-    $('#wvisualizacao').val(imgVisualizacao.width());
-    $('#hvisualizacao').val(imgVisualizacao.height());
-    $('#woriginal').val(this.width);
-    $('#horiginal').val(this.height);
-  };
+image.onload = function() {
+  $('#wvisualizacao').val(imgVisualizacao.width());
+  $('#hvisualizacao').val(imgVisualizacao.height());
+  $('#woriginal').val(this.width);
+  $('#horiginal').val(this.height);
+};
 }

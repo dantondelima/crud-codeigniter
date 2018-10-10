@@ -105,9 +105,8 @@
 			<?php if(isset($error)):?>
 				<div class="alert alert-warning"><?=$error?></div>
 			<?php endif; ?>
-			<form action="<?=base_url('recortar')?>" method="POST" enctype="multipart/form-data">
 				<div class="form-group">
-					<label class="col-md-8 alert alert-info">Selecione uma imagem</label>
+					<label class="col-md-8 alert alert-info img">Selecione uma imagem</label>
 					<input type="file" name="imagem" id="seleciona-imagem"/>
 					<div id="imagem-box">
 					</div>
@@ -126,7 +125,7 @@
 			<textarea cols="80" id="edi" name="desc" rows="5"></textarea>
     </div>
             <div>
-            <input class="btn btn-primary btn-block" style="margin-bottom:45px;margin-top:15px;" type="submit" value="Cadastrar"/>
+            <input class="btn btn-primary btn-block" id="recortar-imagem" style="margin-bottom:45px;margin-top:15px;" type="submit" value="Cadastrar"/>
                 </div>
             </div>
         </form>
