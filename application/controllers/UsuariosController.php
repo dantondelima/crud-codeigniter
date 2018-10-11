@@ -78,15 +78,14 @@ class UsuariosController extends CI_Controller{
 
     public function Recortar(){
         $configUpload['upload_path']   = './assets/uploads/';
-        $configUpload['allowed_types'] = 'jpg|png';
+        $configUpload['allowed_types'] = 'jpg|png|jpeg';
         $configUpload['encrypt_name']  = TRUE;
  
         $this->upload->initialize($configUpload);
 
         if ( !$this->upload->do_upload('imagem'))
         {
-            $data= array('error' => $this->upload->display_errors());
-            var_dump($data);
+            return $data= array('error' => $this->upload->display_errors());
         }
         else
         {
@@ -116,6 +115,31 @@ class UsuariosController extends CI_Controller{
         
     }
 
+    public function PegaDados(){
+        $pegadados = $this->UserModel->criar_datatable();
+        $dados = array();
+        foreach ($pegadados as $row) {
+            $sub_dados = array();
+            $sub_dados[] = $row->id_usuario;
+            $sub_dados[] = $row->nome;
+            $sub_dados[] = $row->email;
+            $sub_dados[] = $row->data_nasc;
+            $sub_dados[] = $row->subcategoria;
+            $sub_dados[] = $row->categoria;
+            $sub_dados[] = "<img src='".$row->imagem."' style='height:100px;width:100px;'/>";
+            $sub_dados[] = "<a href='".base_url('usuario/editar')."/".$row->id_usuario."' role='button' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span></a>";
+            $sub_dados[] = "<a href='".base_url('usuario/excluir')."/".$row->id_usuario."' role='button' class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span></a>";
+            $dados[] = $sub_dados;
+        }
+        $output = array (
+            "draw"  => intval($_POST["draw"]),
+            "recordsTotal" => $this->UserModel->getAllData(), 
+            "recordsFiltered" => $this->UserModel->getFilteredData(),
+            "data" => $dados
+        );
+        echo json_encode($output);    
+    }
+
     private function CalculaPercetual($dimensoes){
         if($dimensoes['woriginal'] > $dimensoes['wvisualizacao']){
             $percentual = $dimensoes['woriginal'] / $dimensoes['wvisualizacao'];
@@ -134,6 +158,7 @@ class UsuariosController extends CI_Controller{
                 $rules['email'] = array('trim', 'required', 'min_length[3]', 'max_length[100]','is_unique[users.email]');
                 $rules['data_nasc'] = array('trim', 'required', 'min_length[3]', 'max_length[20]');
                 $rules['categoria'] = array('trim', 'required');
+                $rules['subcategoria'] = array('trim', 'required');
                 $rules['subcategoria'] = array('trim', 'required');
 				break;
 			case 'update':

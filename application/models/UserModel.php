@@ -37,7 +37,7 @@
             }
           }
 
-        /*function criar_datatable()
+      function criar_datatable()
       {
         $this->criar_query();
         if($_POST["length"] != -1)
@@ -46,7 +46,7 @@
         }
         $query = $this->db->get();
         return $query->result();
-    }
+      }
     
     function getFilteredData()
     {
@@ -59,11 +59,44 @@
     {
         $this->db->select("*");
         $this->db->from($this->table);
-        $this->db->join('subcategorias', 'subcategoria_fk = subcategoria_id');
-        $this->db->join('categorias', 'categoria_fk = categoria_id');
-        $this->db->where('usuario_email', $email);
+        $this->db->join('subcategorias', 'subcategoria_fk = id_subcategoria');
+        $this->db->join('categorias', 'categoria_fk = id_categoria');
+        $this->db->where('email', $email);
         $query = $this->db->get();
         return $query->row_array();
     }
-    */
+    
+    function criar_query()
+    {
+        $this->db->select($this->select_columns);
+        $this->db->from($this->table, 'subcategorias', 'categorias');
+        $this->db->join('subcategorias', 'id_categoria = id_categoria');
+        $this->db->join('categorias', 'categoria_fk = categoria_id');
+        if(!empty($_POST["subcategoria"]))
+        {
+            $this->db->where('subcategoria_id', intval($_POST["subcategoria"]));
+        }
+        else if(!empty($_POST["categoria"]))
+        {
+            $this->db->where('categoria_id', intval($_POST["categoria"]));
+        }     
+        else if(isset($_POST["search"]["value"]))
+        {
+            $this->db->like("usuario_id", $_POST["search"]["value"]);
+            $this->db->or_like("usuario_nome", $_POST["search"]["value"]);
+            $this->db->or_like("usuario_email", $_POST["search"]["value"]);
+            $this->db->or_like("usuario_data", $_POST["search"]["value"]);
+            $this->db->or_like("subcategoria_nome", $_POST["search"]["value"]);
+            $this->db->or_like("categoria_nome", $_POST["search"]["value"]);
+        }
+        if(isset($_POST["order"]))
+        {
+            $this->db->order_by($this->order_columns[$_POST["order"]["0"]["column"]]
+                    , $_POST["order"]["0"]["dir"]);
+        }
+        else
+        {
+            $this->db->order_by("usuario_id", "desc");
+        }
     }
+}
