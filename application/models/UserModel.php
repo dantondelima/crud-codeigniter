@@ -7,11 +7,25 @@
             $this->table = 'users';
         }
 
+        function GetAllJoin($id) {
+          $this->db->select("*");
+          $this->db->from($this->table);
+          $this->db->join('subcategorias', 'subcategoria_fk = id_subcategoria');
+          $this->db->join('categorias', 'categoria_fk = id_categoria');
+          $this->db->order_by($id, 'desc');
+          $query = $this->db->get();
+            if ($query->num_rows() > 0) {
+              return $query->result_array();
+            } else {
+              return null;
+            }
+        }
+
         function selectSubcategoria($id) {
             $this->db
             ->select("*")
             ->from("subcategorias")
-            ->where('id_categoria', $id);
+            ->where('categoria_id', $id);
             $dados = $this->db->get();
             return $dados->result_array();
           }
@@ -19,8 +33,17 @@
           function selectCategoria() {
             $this->db
             ->select("*")
-            ->from("categorias")
-            ->join('categorias', 'users.categoria = categorias.id_categoria');
+            ->from("users")
+            ->join('categorias', 'users.categoria_fk = categorias.id_categoria');
+            $dados = $this->db->get();
+            return $dados->result_array();
+          }
+
+          function getSubCategoria() {
+            $this->db
+            ->select("*")
+            ->from("users")
+            ->join('subcategorias', 'users.categoria_fk = subcategorias.id_categoria');
             $dados = $this->db->get();
             return $dados->result_array();
           }
@@ -37,7 +60,11 @@
             }
           }
 
-      function criar_datatable()
+
+
+
+          
+        /*function criar_datatable()
       {
         $this->criar_query();
         if($_POST["length"] != -1)
@@ -46,7 +73,7 @@
         }
         $query = $this->db->get();
         return $query->result();
-      }
+    }
     
     function getFilteredData()
     {
@@ -59,44 +86,11 @@
     {
         $this->db->select("*");
         $this->db->from($this->table);
-        $this->db->join('subcategorias', 'subcategoria_fk = id_subcategoria');
-        $this->db->join('categorias', 'categoria_fk = id_categoria');
-        $this->db->where('email', $email);
+        $this->db->join('subcategorias', 'subcategoria_fk = subcategoria_id');
+        $this->db->join('categorias', 'categoria_fk = categoria_id');
+        $this->db->where('usuario_email', $email);
         $query = $this->db->get();
         return $query->row_array();
     }
-    
-    function criar_query()
-    {
-        $this->db->select($this->select_columns);
-        $this->db->from($this->table, 'subcategorias', 'categorias');
-        $this->db->join('subcategorias', 'id_categoria = id_categoria');
-        $this->db->join('categorias', 'categoria_fk = categoria_id');
-        if(!empty($_POST["subcategoria"]))
-        {
-            $this->db->where('subcategoria_id', intval($_POST["subcategoria"]));
-        }
-        else if(!empty($_POST["categoria"]))
-        {
-            $this->db->where('categoria_id', intval($_POST["categoria"]));
-        }     
-        else if(isset($_POST["search"]["value"]))
-        {
-            $this->db->like("usuario_id", $_POST["search"]["value"]);
-            $this->db->or_like("usuario_nome", $_POST["search"]["value"]);
-            $this->db->or_like("usuario_email", $_POST["search"]["value"]);
-            $this->db->or_like("usuario_data", $_POST["search"]["value"]);
-            $this->db->or_like("subcategoria_nome", $_POST["search"]["value"]);
-            $this->db->or_like("categoria_nome", $_POST["search"]["value"]);
-        }
-        if(isset($_POST["order"]))
-        {
-            $this->db->order_by($this->order_columns[$_POST["order"]["0"]["column"]]
-                    , $_POST["order"]["0"]["dir"]);
-        }
-        else
-        {
-            $this->db->order_by("usuario_id", "desc");
-        }
+    */
     }
-}

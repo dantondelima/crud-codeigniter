@@ -20,12 +20,13 @@
         <tr>
             <th>Subcategoria</th>
             <th>Categoria</th>
-            <th>Ação</th>
-            <th>Ação</th>
+            <th>Editar</th>
+            <th>Excluir</th>
         </tr>
     </thead>
     <tbody>
         <?php
+        if( !empty($subcategorias) ) {
             foreach($subcategorias as $sc): ?>
             <tr>
                 <td><?= $sc['subcategoria'] ?></td>
@@ -34,7 +35,8 @@
                 <td><a href="<?php echo base_url() . 'subcategoria/excluir/' . $sc['id_subcategoria'] ?>">Excluir</a></td>
             </tr>
         <?php
-            endforeach
+            endforeach;
+        }
         ?>
     </tbody>
     </table>

@@ -2,17 +2,13 @@
 class SubcategoriasController extends CI_Controller{
   
     function index(){
-        // Recupera os contatos através do model
         $subcategorias = $this->SubcategoriaModel->selectCategoria();
-		// Passa os contatos para o array que será enviado à home
 		$dados['subcategorias'] = $this->SubcategoriaModel->Formatar($subcategorias);
-		// Chama a home enviando um array de dados a serem exibidos
 		$this->template->load('layout', 'subcategorias/listar', $dados);
     }
 
     public function Form() {
         $categorias = $this->CategoriaModel->GetAll('categoria');
-		// Passa os contatos para o array que será enviado à home
 		$dados['categorias'] = $this->CategoriaModel->Formatar($categorias);
         $this->template->load('layout', 'subcategorias/cadastrar', $dados);              
     }
@@ -34,16 +30,13 @@ class SubcategoriasController extends CI_Controller{
     }
 
     public function Editar(){
-		// Recupera o ID do registro - através da URL - a ser editado
 		$id = $this->uri->segment(3);
-		// Se não foi passado um ID, então redireciona para a home
 		if(is_null($id))
 			redirect();
-		// Recupera os dados do registro a ser editado
+
         $dados['subcategoria'] = $this->SubcategoriaModel->GetById($id, 'subcategoria');
         $categorias = $this->CategoriaModel->GetAll('categoria');
         $outros['categorias'] = $this->CategoriaModel->Formatar($categorias);
-		// Carrega a view passando os dados do registro
 		$this->template->load('layout', 'subcategorias/alterar', $dados);
 	}
 

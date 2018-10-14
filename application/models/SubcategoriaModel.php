@@ -19,7 +19,7 @@
           $this->db
           ->select("*")
           ->from("subcategorias")
-          ->join('categorias', 'subcategorias.id_categoria = categorias.id_categoria');
+          ->join('categorias', 'subcategorias.categoria_id = categorias.id_categoria');
           $dados = $this->db->get();
           return $dados->result_array();
         }

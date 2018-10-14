@@ -20,21 +20,14 @@ $route['subcategoria/alterar/(:num)'] = "SubcategoriasController/Editar/$1";
 $route['subcategoria/atualizar'] = "SubcategoriasController/Atualizar";
 $route['subcategoria/excluir/(:num)'] = "SubcategoriasController/Excluir/$1";
 
-
-$route['usuario/pega_dados'] = 'Usuario/PegaDados';
-$route['usuario/pega_dados_subcategoria'] = 'Usuario/PegaDadosPorSubcategoria';
-
 $route['usuario'] = "UsuariosController/index";
 $route['usuario/cadastro'] = "UsuariosController/Form";
 $route['usuario/cadastrar'] = "UsuariosController/Salvar";
 $route['usuario/categoria'] = "UsuariosController/Categoria";
 $route['usuario/subcategoria/(:num)'] = "UsuariosController/Subcategoria/$1";
-$route['usuario/subcategoria/all'] = 'Usuario/SubcategoriaAll';
 $route['usuario/alterar/(:num)'] = "UsuariosController/Editar/$1";
 $route['usuario/atualizar'] = "UsuariosController/Atualizar";
 $route['usuario/excluir/(:num)'] = "UsuariosController/Excluir/$1";
 
 $route['recortar'] = "UsuariosController/Recortar";
 $route['visualizacao'] = 'UsuariosController/Visualizacao';
-
-$route['enviarEmail/usuario'] = 'Email/EnviarEmailUsuario';

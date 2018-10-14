@@ -4,14 +4,16 @@ class Ckeditor extends CI_Controller {
  
 	// extends CI_Controller for CI 2.x users
  
+	// extends CI_Controller for CI 2.x users
+ 
 	public $data 	= 	array();
  
 	public function __construct() {
  
 		//parent::Controller();
 		 parent::__construct();
-
-		$this->load->helper('ckeditor');
+ 
+		$this->load->helper('ckeditor_helper');
  
  
 		//Ckeditor's configuration
@@ -63,7 +65,7 @@ class Ckeditor extends CI_Controller {
  
 			//Optionnal values
 			'config' => array(
-				'width' 	=> 	"550px",	//Setting a custom width
+				'width' 	=> 	"100%",	//Setting a custom width
 				'height' 	=> 	'100px',	//Setting a custom height
 				'toolbar' 	=> 	array(	//Setting a custom toolbar
 					array('Bold', 'Italic'),
@@ -92,9 +94,14 @@ class Ckeditor extends CI_Controller {
  
 	}
  
-	public function index() {
- 
-		$this->load->view('ckeditor', $this->data);
+	public function index() 
+	{
+	    $this->load->library('CKEditor');
+		$this->load->library('CKFinder');
+	 
+		//Add Ckfinder to Ckeditor
+		$this->ckfinder->SetupCKEditor($this->ckeditor,'../../assets/ckfinder/');  
+	    $this->load->view('ckeditor/ckeditor', $this->data);
  
 	}
 }

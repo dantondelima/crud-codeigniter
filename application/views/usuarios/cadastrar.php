@@ -13,6 +13,8 @@
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
     <script src="<?=base_url('assets/js/scripts.js')?>"></script>
     <script type="text/javascript" src="<?=base_url('assets/ckeditor/ckeditor.js')?>"></script>
+    <script type="text/javascript" src="<?= base_url('assets/ckfinder/ckfinder.js'); ?>"></script>
+
 
     
     <script>
@@ -122,7 +124,7 @@
 			<input type="hidden" id="woriginal" name="woriginal" />
 			<input type="hidden" id="horiginal" name="horiginal" />
 
-			<textarea cols="80" id="edi" name="desc" rows="5"></textarea>
+			<?php echo $this->ckeditor->editor("edi",""); ?>
     </div>
             <div>
             <input class="btn btn-primary btn-block" id="recortar-imagem" style="margin-bottom:45px;margin-top:15px;" type="submit" value="Cadastrar"/>
