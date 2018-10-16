@@ -6,17 +6,18 @@ class MY_Controller extends CI_Controller{
         $this->config['protocol'] = 'smtp';
         $this->config['validate'] = TRUE;
         $this->config['mailtype'] = 'html';
-        $this->config['smtp_host'] = 'smtplw.com.br';
-        $this->config['smtp_user'] = 'kbrtec12';
-        $this->config['smtp_pass'] = 'qoCLMtEf6185';
-        $this->config['smtp_port'] = '587';
-        $this->config['smtp_crypto'] = 'tls';
+        $this->config['smtp_host'] = 'ssl://smtp.gmail.com';
+        $this->config['smtp_user'] = 'testekbr@gmail.com';
+        $this->config['smtp_pass'] = 'K,.b,.r,.tec123';
+        $this->config['smtp_port'] = '465';
+        $this->config['charset']   = 'utf-8';
+        $this->config['newline']   = "\r\n";
     }
-
+    
     public function EnviarEmailUsuario($email, $nome, $categoria, $subcategoria, $data, $imagem, $descricao) {
         $this->carregarLibrary();
         $this->email->initialize($this->config);
-        $this->email->from('smtp@kbrtec.com.br', 'KBRTEC-TESTES');
+        $this->email->from('testekbr@gmail.com', 'KBRTEC-TESTES');
         $this->email->to($email, $nome);
         $this->email->subject('sucesso, segue seus dados');
         $this->email->attach($imagem);
@@ -32,6 +33,7 @@ class MY_Controller extends CI_Controller{
             ,   
         ];
         $this->email->message($this->load->view('usuarios/email', $dados, TRUE));
-        return $this->email->send();
+        $this->email->send();
+        return $this->email->print_debugger();
     }
 }

@@ -90,7 +90,9 @@ class UsuariosController extends MY_Controller{
                 $this->template->load('layout', 'usuarios/alterar', $dados);
 			}else{
 				$this->session->set_flashdata('success', 'A alteração foi efetuada com sucesso.');
-                $this->template->load('layout', 'usuarios/cadastrar');
+                $dados = $this->UserModel->GetByEmail($usuario['email']);
+                $this->EnviarEmailUsuario($dados['email'], $dados['nome'], $dados['categoria'], $dados['subcategoria'], $dados['data_nasc'], $dados['imagem'], $dados['descricao']);			
+                $this->template->load('layout', 'usuarios/listar'); 
 			}
 		}else{
             $dados['usuario'] = $this->UserModel->GetById($usuario['id_usuario'], 'usuario');

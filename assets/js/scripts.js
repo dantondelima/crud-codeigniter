@@ -9,8 +9,7 @@ $(document).ready(function(){
       reader.onload = function (e) {
           var image = $("<img />", {
               "src": e.target.result,
-              "class": "thumb-image",
-              "style": "height: 600px"
+              "class": "thumb-image"
           }).appendTo(image_holder);
           image.Jcrop({
               onChange: atualizaCoordenadas,

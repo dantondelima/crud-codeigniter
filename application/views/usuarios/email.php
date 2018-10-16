@@ -18,7 +18,7 @@
         <img align="center" src="cid:<?= $imagem ?>" style="width: 100px"/>
         <br/>
         <br/>
-        <div class="container-fluid" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.5)">
+        <div class="container-fluid">
             <?= $descricao ?>
         </div>
     </body>
