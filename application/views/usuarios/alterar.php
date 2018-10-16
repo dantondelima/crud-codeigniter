@@ -38,13 +38,13 @@
                         obj.categoria+"</option>";
                 });
             }
-            $("#categoria").html(option).show();
+            $("#categoria_fk").html(option).show();
         });
 
-        $("#categoria").change(function(e){
+        $("#categoria_fk").change(function(e){
             
 
-            var categoria = $("#categoria").val();
+            var categoria = $("#categoria_fk").val();
             $.getJSON("<?= base_url().'usuario/subcategoria/'?>"+categoria, function(dados){
                 var option = "<option value=''>Selecione uma subcategoria</option>"; 
                 if(dados.length > 0){
@@ -54,12 +54,12 @@
                 } else{
                     Reset();
                 }
-                $('#subcategoria').html(option).show();
+                $('#subcategoria_fk').html(option).show();
             })
         }); 
 
         function Reset(){
-            $('#subcategoria').empty().append('<option>Selecione uma subcategoria</option>>');
+            $('#subcategoria_fk').empty().append('<option>Selecione uma subcategoria</option>>');
         }   
         });
         
@@ -78,32 +78,68 @@
                 </div>
                 <div class="form-group">
                     <label>Email:</label>
-                    <input class="form-control" type="text" name="email" value="<?= $usuario['email']?>" required/>
+                    <input class="form-control" type="text" name="email" value="<?= $usuario['email']?>"/>
                 </div>
                 <div class="form-group">
                     <label>Data de Nascimento:</label>
-                    <input class="form-control" type="text" id="datepicker" name="data_nasc" value="<?= $usuario['data_nasc']?>" required/>
+                    <input class="form-control" type="text" id="datepicker" name="data_nasc" value="<?= $usuario['data_nasc']?>"/>
                 </div>
                 <div class="form-group">
                     <label>Categoria:</label>
                     <div>
-                    <select class="form-control" name="categoria" id="categoria" placeholder="Categoria">
+                    <select class="form-control" name="categoria" id="categoria_fk" placeholder="Categoria">
                     </select> 
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Subcategoria:</label>
                     <div>
-                    <select class="form-control" name="subcategoria" id="subcategoria" placeholder="Subcategoria">
+                    <select class="form-control" name="subcategoria" id="subcategoria_fk" placeholder="Subcategoria">
                         <option value="">Selecione uma subcategoria</option>
                     </select> 
                     </div>
                 </div>
                 </div>
-                <div>
-                    <input style="margin-top:10px" class="btn btn-primary" type="submit" value="Alterar"/>
+                <div class="crop-div" style="margin-left:30px;">
+        <div class="row">
+		<div class="">
+			<?php if(isset($error)):?>
+				<div class="alert alert-warning"><?=$error?></div>
+			<?php endif; ?>
+				<div class="form-group">
+                    <img class="img" name="imagem_antiga" src="<?= $usuario['imagem'] ?>" alt="thumb">
+                    <input type="hidden" name="imagem_antiga" value="<?=$usuario['imagem'] ?>"/>
+					<input type="file" name="imagem" id="seleciona-imagem"/>
+					<div id="imagem-box">
+					</div>
+				</div>
+		</div>
+		<div class="col-md-12">			
+			<input type="hidden" id="x" name="x" />
+			<input type="hidden" id="y" name="y" />
+			<input type="hidden" id="wcrop" name="wcrop" />
+			<input type="hidden" id="hcrop" name="hcrop" />
+			<input type="hidden" id="wvisualizacao" name="wvisualizacao" />
+			<input type="hidden" id="hvisualizacao" name="hvisualizacao" />
+			<input type="hidden" id="woriginal" name="woriginal" />
+			<input type="hidden" id="horiginal" name="horiginal" />
+
+			<textarea name="desc" id="edi" cols="30" rows="10"><?= $usuario['descricao']?></textarea>
+    </div>
+            <div>
+            <input class="btn btn-primary btn-block" id="recortar-imagem" style="margin-bottom:45px;margin-top:15px;" type="submit" value="Cadastrar"/>
                 </div>
+            </div>
         </form>
+        <?php if ($this->session->flashdata('error') == TRUE): ?>
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong><?php echo $this->session->flashdata('error'); ?></strong>
+    </div>
+<?php endif; ?>
+    <script>
+	CKEDITOR.replace('edi');
+</script> 
     </div>
 </body>
 </html>

@@ -38,7 +38,7 @@
                 <td><?= $usuario['data_nasc'] ?></td>
                 <td><?= $usuario['categoria'] ?></td>
                 <td><?= $usuario['subcategoria'] ?></td>
-                <td><img src="<?= $usuario['imagem'] ?>" alt="thumb"></td>
+                <td><img style="height:50px;" src="<?= $usuario['imagem'] ?>" alt="thumb"></td>
                 <td><a href="<?php echo base_url() . 'usuario/alterar/' . $usuario['id_usuario'] ?>">Editar</a></td>
                 <td><a href="<?php echo base_url() . 'usuario/excluir/' . $usuario['id_usuario'] ?>">Excluir</a></td>
             </tr>
@@ -48,6 +48,11 @@
         ?>
     </tbody>
     </table>
-    
+    <?php if ($this->session->flashdata('success') == TRUE): ?>
+	<div class="alert alert-success alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong><?php echo $this->session->flashdata('success'); ?></strong>
+    </div>
+<?php endif;?>
 </body>
 </html>

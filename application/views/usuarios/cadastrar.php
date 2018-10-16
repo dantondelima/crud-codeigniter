@@ -13,10 +13,8 @@
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
     <script src="<?=base_url('assets/js/scripts.js')?>"></script>
     <script type="text/javascript" src="<?=base_url('assets/ckeditor/ckeditor.js')?>"></script>
-    <script type="text/javascript" src="<?= base_url('assets/ckfinder/ckfinder.js'); ?>"></script>
+    <script type="text/javascript" src="<?= base_url('assets/ckfinder/ckfinder.js')?>"></script>
 
-
-    
     <script>
     $( function() {
         $(document).ready(function(){
@@ -45,8 +43,6 @@
         });
 
         $("#categoria").change(function(e){
-            
-
             var categoria = $("#categoria").val();
             $.getJSON("<?= base_url().'usuario/subcategoria/'?>"+categoria, function(dados){
                 var option = "<option value=''>Selecione uma subcategoria</option>"; 
@@ -124,13 +120,25 @@
 			<input type="hidden" id="woriginal" name="woriginal" />
 			<input type="hidden" id="horiginal" name="horiginal" />
 
-			<?php echo $this->ckeditor->editor("edi",""); ?>
+			<textarea name="desc" id="edi" cols="30" rows="10"></textarea>
     </div>
             <div>
             <input class="btn btn-primary btn-block" id="recortar-imagem" style="margin-bottom:45px;margin-top:15px;" type="submit" value="Cadastrar"/>
                 </div>
             </div>
         </form>
+        <?php if ($this->session->flashdata('error') == TRUE): ?>
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong><?php echo $this->session->flashdata('error'); ?></strong>
+    </div>
+<?php endif; ?>
+<?php if ($this->session->flashdata('success') == TRUE): ?>
+	<div class="alert alert-success alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong><?php echo $this->session->flashdata('success'); ?></strong>
+    </div>
+<?php endif;?>
     <script>
 	CKEDITOR.replace('edi');
 </script> 

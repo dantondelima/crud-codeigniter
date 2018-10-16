@@ -3,7 +3,7 @@
 
     class MY_Model extends CI_Model {
         var $table = "";
-
+        
         function __construct() {
             //parent::__construct();
         }
@@ -26,6 +26,7 @@
           *
           * @return array
           */
+          
           function GetById($id, $tabela) {
             if(is_null($id))
               return false;

@@ -10,7 +10,7 @@ $(document).ready(function(){
           var image = $("<img />", {
               "src": e.target.result,
               "class": "thumb-image",
-              "style": "width: 600px"
+              "style": "height: 600px"
           }).appendTo(image_holder);
           image.Jcrop({
               onChange: atualizaCoordenadas,

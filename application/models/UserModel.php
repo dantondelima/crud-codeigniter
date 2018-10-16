@@ -21,6 +21,17 @@
             }
         }
 
+        function GetByEmail($email)
+        {
+            $this->db->select("*");
+            $this->db->from($this->table);
+            $this->db->join('subcategorias', 'subcategoria_fk = id_subcategoria');
+            $this->db->join('categorias', 'categoria_fk = id_categoria');
+            $this->db->where('email', $email);
+            $query = $this->db->get();
+            return $query->row_array();
+        }
+
         function selectSubcategoria($id) {
             $this->db
             ->select("*")
@@ -60,7 +71,7 @@
             }
           }
 
-
+        
 
 
           

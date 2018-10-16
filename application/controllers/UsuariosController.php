@@ -1,6 +1,5 @@
 <?php
-class UsuariosController extends CI_Controller{
-  
+class UsuariosController extends MY_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->library(['session','upload','image_lib']);
@@ -52,13 +51,14 @@ class UsuariosController extends CI_Controller{
 			if(!$status){
 				$this->session->set_flashdata('error', 'Não foi possível inserir o contato.');
 			}else{
-				$this->session->set_flashdata('success', 'Contato inserido com sucesso.');
-                $this->template->load('layout', 'inicio');			
+                $this->session->set_flashdata('success', 'Usuario inserido com sucesso.');
+                $dados = $this->UserModel->GetByEmail($usuario['email']);
+                $this->EnviarEmailUsuario($dados['email'], $dados['nome'], $dados['categoria'], $dados['subcategoria'], $dados['data_nasc'], $dados['imagem'], $dados['descricao']);			
+                $this->template->load('layout', 'usuarios/listar'); 
             }
 		}else{
             $this->session->set_flashdata('error', validation_errors('<p>','</p>'));
-            var_dump($this);
-			$this->template->load('layout', 'inicio');
+			$this->template->load('layout', 'usuarios/cadastrar');
         }
     }
 
@@ -71,20 +71,31 @@ class UsuariosController extends CI_Controller{
 	}
 
     public function Atualizar(){
-		$validacao = self::Validar('update');
+        $validacao = self::Validar('update');
+        $usuario = $this->input->post();
+        $post = [
+            'nome' => $usuario['nome'],
+            'email' => $usuario['email'],
+            'data_nasc' => $usuario['data_nasc'],
+            'categoria_fk' => $usuario['categoria'],
+            'subcategoria_fk' => $usuario['subcategoria'],
+            'imagem' => $this->Recortar(),
+            'descricao' => $usuario['desc']
+        ];
 		if($validacao){
-			$usuario = $this->input->post();
-            $status = $this->UserModel->Atualizar($usuario['id_usuario'], $usuario, 'usuario');
+            $status = $this->UserModel->Atualizar($usuario['id_usuario'], $post, 'usuario');
 			if(!$status){
-				$dados['categoria'] = $this->CategoriaModel->GetById($categoria['id_categoria'], 'categoria');
-                $this->session->set_flashdata('error', 'Não foi possível atualizar o contato.');
-                $this->template->load('layout', 'inicio');
+				$dados['usuario'] = $this->UserModel->GetById($usuario['id_usuario'], 'usuario');
+                $this->session->set_flashdata('error', 'Não foi possível atualizar o registro.');
+                $this->template->load('layout', 'usuarios/alterar', $dados);
 			}else{
-				$this->session->set_flashdata('success', 'Contato atualizado com sucesso.');
-                $this->template->load('layout', 'inicio');
+				$this->session->set_flashdata('success', 'A alteração foi efetuada com sucesso.');
+                $this->template->load('layout', 'usuarios/cadastrar');
 			}
 		}else{
+            $dados['usuario'] = $this->UserModel->GetById($usuario['id_usuario'], 'usuario');
             $this->session->set_flashdata('error', validation_errors());
+            $this->template->load('layout', 'usuarios/alterar', $dados);
         }
 	}
 
@@ -178,74 +189,12 @@ class UsuariosController extends CI_Controller{
 			redirect();
 		$status = $this->UserModel->Excluir($id, 'usuario');
 		if($status){
-			$this->session->set_flashdata('success', '<p>Contato excluído com sucesso.</p>');
+			$this->session->set_flashdata('success', '<p>Registro excluído com sucesso.</p>');
 		}else{
-			$this->session->set_flashdata('error', '<p>Não foi possível excluir o contato.</p>');
+			$this->session->set_flashdata('error', '<p>Não foi possível excluir o registro.</p>');
         }
+
         $this->index();
     }
-
-    /*public function PegaDados(){
-        $pegadados = $this->user_model->criar_datatable();
-        $dados = array();
-        foreach ($pegadados as $row) {
-            $sub_dados = array();
-            $sub_dados[] = $row->usuario_id;
-            $sub_dados[] = $row->usuario_nome;
-            $sub_dados[] = $row->usuario_email;
-            $sub_dados[] = $row->usuario_data;
-            $sub_dados[] = $row->subcategoria_nome;
-            $sub_dados[] = $row->categoria_nome;
-            $sub_dados[] = "<a href='".base_url('usuario/editar')."/".$row->usuario_id."' role='button' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span></a>";
-            $sub_dados[] = "<a href='".base_url('usuario/excluir')."/".$row->usuario_id."' role='button' class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span></a>";
-            $dados[] = $sub_dados;
-        }
-        
-        $output = array (
-            "draw"  => intval($_POST["draw"]),
-            "recordsTotal" => $this->user_model->getAllData(), 
-            "recordsFiltered" => $this->user_model->getFilteredData(),
-            "data" => $dados
-        );
-        echo json_encode($output);
-    }
-    
-    public function Atualizar(){
-            $urlImagem = $this->Recortar();
-                if ($urlImagem != NULL) {
-                    unlink(substr($this->input->post('post_foto_antiga'), 35));
-                }
-                else 
-                {
-                    $urlImagem = $this->input->post("post_foto_antiga");
-                }
-            $validacao = self::Validar('update');
-                $post = [
-                   'usuario_fk' => $this->input->post('usuario_fk'), 
-                   'post_titulo' => $this->input->post('post_titulo'), 
-                   'post_conteudo' => $this->input->post('post_titulo'), 
-                   'post_foto' => $urlImagem
-                ];
-                $id = intval($this->input->post('post_id'));
-                if($validacao){
-                    $status = $this->posts_model->Atualizar($id, $post, 'post');
-                    if(!$status){
-                        $dados['post'] = $this->posts_model->GetIdJoin($id, 'post');
-                        $this->session->set_flashdata('error', 'Não foi possível atualizar o Post.');
-                        $this->template->load('template', 'posts/form-alteracao', $dados);
-                    }else{
-                        $this->session->set_flashdata('success', 'Post atualizado com sucesso.');
-                        $dados = $this->posts_model->GetByTitulo($post['post_titulo']);
-                        $this->EnviarEmailPosts($dados['usuario_nome'], $dados['usuario_email'], $dados['post_conteudo'], $dados['post_titulo'], $dados['post_foto'], 'Post atualizado com sucesso');
-                        redirect(base_url('posts'));
-                    }
-                }else{
-                    $dados['post'] = $this->posts_model->GetIdJoin($id, 'post');
-                    $this->session->set_flashdata('error', validation_errors());
-                    $this->template->load('template', 'posts/form-alteracao', $dados);
-                }
-            }
-    
-    */
 
 }
