@@ -9,7 +9,7 @@ class UsuariosController extends MY_Controller{
         $this->ckeditor->config['language'] = 'pt';
         $this->ckeditor->config['width'] = '950px';
         $this->ckeditor->config['height'] = '100px'; 
-        $this->ckfinder->SetupCKEditor($this->ckeditor,'../../assets/ckfinder/');
+        $this->ckfinder->SetupCKEditor($this->ckeditor,'/assets/ckfinder/');
     }
 
     function index(){

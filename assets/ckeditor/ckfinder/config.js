@@ -3,6 +3,14 @@
  For licensing, see LICENSE.html or https://ckeditor.com/sales/license/ckfinder
  */
 
+function CheckAuthentication() {
+	if (!empty($_SESSION['usuario'])){
+		return true;
+	}
+
+	return false;
+}
+
 var config = {};
 
 // Set your configuration options below.

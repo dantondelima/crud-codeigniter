@@ -13,25 +13,25 @@
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
     <script src="<?=base_url('assets/js/scripts.js')?>"></script>
     <script type="text/javascript" src="<?=base_url('assets/ckeditor/ckeditor.js')?>"></script>
-    <script type="text/javascript" src="<?= base_url('assets/ckfinder/ckfinder.js')?>"></script>
+    <script type="text/javascript" src="<?= base_url('assets/ckeditor/ckfinder/ckfinder.js')?>"></script>
 
     <script>
     $( function() {
         $(document).ready(function(){
-        $( "#datepicker" ).datepicker({
-            dateFormat: "dd/mm/yy",
-            changeMonth: true,
-            changeYear: true,
-            dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
-            dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
-            dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
-            monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-            monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+        
+            $( "#datepicker" ).datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
+                dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+                dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+                monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+            });
         });
-    });
     
-      
-            $.getJSON("<?= base_url().'subcategoria/categoria'?>", function(dados){
+        $.getJSON("<?= base_url().'subcategoria/categoria'?>", function(dados){
             if (dados.length > 0){
                 var option = "<option value=''>Selecione uma categoria</option>"; 
                 $.each(dados, function(i, obj){
@@ -59,8 +59,8 @@
 
         function Reset(){
             $('#subcategoria').empty().append('<option>Selecione uma subcategoria</option>>');
-        }   
-        });
+        }  
+    });
         
     </script>
 </head>
@@ -139,8 +139,16 @@
         <strong><?php echo $this->session->flashdata('success'); ?></strong>
     </div>
 <?php endif;?>
-    <script>
-	CKEDITOR.replace('edi');
+<script>
+	editor = CKEDITOR.replace( 'edi', {
+        width: '100%',
+        height: 138,
+        resize_enabled: false,
+        language: 'pt',
+        customConfig: "<?= base_url().'assets/ckeditor/config.js' ?>",
+        extraPlugins: 'image,uploadimage'
+    });
+    CKFinder.setupCKEditor(editor, '<?= base_url().'assets/ckeditor/ckfinder'?>');
 </script> 
 </body>
 </html>

@@ -4,11 +4,7 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here.
-	// For complete reference see:
-	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
-	// The toolbar groups arrangement, optimized for two toolbar rows.
 	config.toolbarGroups = [
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
@@ -26,8 +22,6 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' }
 	];
 
-	// Remove some buttons provided by the standard plugins, which are
-	// not needed in the Standard(s) toolbar.
 		config.removeButtons = 'Scayt,Save,NewPage,Preview,Source,Templates,Print,PasteFromWord,Find,SelectAll,Replace,Cut,Copy,Paste,PasteText,Form,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Smiley,CreateDiv,Checkbox,Superscript,Subscript,Language,Anchor,SpecialChar,Iframe,Maximize,ShowBlocks,About';
         config.filebrowserBrowseUrl = '../assets/ckeditor/ckfinder/ckfinder.html';
         config.filebrowserImageBrowseUrl = '../assets/ckeditor/ckfinder/ckfinder.html?type=Images';

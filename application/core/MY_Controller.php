@@ -33,7 +33,6 @@ class MY_Controller extends CI_Controller{
             ,   
         ];
         $this->email->message($this->load->view('usuarios/email', $dados, TRUE));
-        $this->email->send();
-        return $this->email->print_debugger();
+        return $this->email->send(); 
     }
 }
