@@ -4,7 +4,11 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
+	// Define changes to default configuration here.
+	// For complete reference see:
+	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
+	// The toolbar groups arrangement, optimized for two toolbar rows.
 	config.toolbarGroups = [
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
@@ -22,11 +26,13 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' }
 	];
 
-		config.removeButtons = 'Scayt,Save,NewPage,Preview,Source,Templates,Print,PasteFromWord,Find,SelectAll,Replace,Cut,Copy,Paste,PasteText,Form,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Smiley,CreateDiv,Checkbox,Superscript,Subscript,Language,Anchor,SpecialChar,Iframe,Maximize,ShowBlocks,About';
-        config.filebrowserBrowseUrl = '../assets/ckeditor/ckfinder/ckfinder.html';
-        config.filebrowserImageBrowseUrl = '../assets/ckeditor/ckfinder/ckfinder.html?type=Images';
-        config.filebrowserFlashBrowseUrl = '../assets/ckeditor/ckfinder/ckfinder.html?type=Flash';
-        config.filebrowserUploadUrl = '../assets/ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-        config.filebrowserImageUploadUrl = '../assets/ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-        config.filebrowserFlashUploadUrl = '../assets/ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
+	// Remove some buttons provided by the standard plugins, which are
+	// not needed in the Standard(s) toolbar.
+	config.removeButtons = 'Underline,Subscript,Superscript';
+
+	// Set the most common block elements.
+	config.format_tags = 'p;h1;h2;h3;pre';
+
+	// Simplify the dialog windows.
+	config.removeDialogTabs = 'image:advanced;link:advanced';
 };

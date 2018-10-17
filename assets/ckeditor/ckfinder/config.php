@@ -1,14 +1,12 @@
 <?php
 
-/*
- * CKFinder Configuration File
- *
- * For the official documentation visit https://docs.ckeditor.com/ckfinder/ckfinder3-php/
- */
+function CheckAuthentication() {
+	if (!empty($_SESSION['usuario'])){
+		return true;
+	}
 
-/*============================ PHP Error Reporting ====================================*/
-// https://docs.ckeditor.com/ckfinder/ckfinder3-php/debugging.html
-
+	return false;
+}
 // Production
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 ini_set('display_errors', 0);
@@ -26,7 +24,7 @@ $config = array();
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_authentication
 
 $config['authentication'] = function () {
-    return false;
+    return true;
 };
 
 /*============================ License Key ============================================*/
