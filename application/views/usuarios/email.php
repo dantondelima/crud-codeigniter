@@ -21,5 +21,6 @@
         <div class="container-fluid">
             <?= $descricao ?>
         </div>
+        <div><?= $hora ?></div>
     </body>
 </html>

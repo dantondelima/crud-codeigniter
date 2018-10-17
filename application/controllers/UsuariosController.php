@@ -53,8 +53,10 @@ class UsuariosController extends MY_Controller{
 			}else{
                 $this->session->set_flashdata('success', 'Usuario inserido com sucesso.');
                 $dados = $this->UserModel->GetByEmail($usuario['email']);
-                $this->EnviarEmailUsuario($dados['email'], $dados['nome'], $dados['categoria'], $dados['subcategoria'], $dados['data_nasc'], $dados['imagem'], $dados['descricao']);			
-                $this->template->load('layout', 'usuarios/listar'); 
+                $hora = date('d-m-Y');
+                $hora .= ' '.date('H:i:s');
+                $this->EnviarEmailUsuario($dados['email'], $dados['nome'], $dados['categoria'], $dados['subcategoria'], $dados['data_nasc'], $dados['imagem'], $dados['descricao'], $hora);			
+                $this->index(); 
             }
 		}else{
             $this->session->set_flashdata('error', validation_errors('<p>','</p>'));
@@ -91,9 +93,11 @@ class UsuariosController extends MY_Controller{
 			}else{
 				$this->session->set_flashdata('success', 'A alteração foi efetuada com sucesso.');
                 $dados = $this->UserModel->GetByEmail($usuario['email']);
-                $this->EnviarEmailUsuario($dados['email'], $dados['nome'], $dados['categoria'], $dados['subcategoria'], $dados['data_nasc'], $dados['imagem'], $dados['descricao']);			
-                $this->template->load('layout', 'usuarios/listar'); 
-			}
+                $hora = date('d-m-Y');
+                $hora .= ' '.date('H:i:s');
+                $this->EnviarEmailUsuario($dados['email'], $dados['nome'], $dados['categoria'], $dados['subcategoria'], $dados['data_nasc'], $dados['imagem'], $dados['descricao'], $hora);                $this->index();
+                $this->index(); 
+            }
 		}else{
             $dados['usuario'] = $this->UserModel->GetById($usuario['id_usuario'], 'usuario');
             $this->session->set_flashdata('error', validation_errors());
@@ -197,6 +201,31 @@ class UsuariosController extends MY_Controller{
         }
 
         $this->index();
+    }
+
+    public function PegaDados(){
+        $pegadados = $this->UserModel->criar_datatable();
+        $dados = array();
+        foreach ($pegadados as $row) {
+            $sub_dados = array();
+            $sub_dados[] = $row->nome;
+            $sub_dados[] = $row->email;
+            $sub_dados[] = $row->data_nasc;
+            $sub_dados[] = $row->categoria;
+            $sub_dados[] = $row->subcategoria;
+            $sub_dados[] = "<img src='".$row->imagem."' style='height:50px;width:50px;'/>";
+            $sub_dados[] = "<a href='".base_url('usuario/alterar')."/".$row->id_usuario."' role='button' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span></a>";
+            $sub_dados[] = "<a href='".base_url('usuario/excluir')."/".$row->id_usuario."' role='button' class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span></a>";
+            $dados[] = $sub_dados;
+        }
+        
+        $output = array (
+            "draw"  => intval($_POST["draw"]),
+            "recordsTotal" => $this->UserModel->getAllData(), 
+            "recordsFiltered" => $this->UserModel->getFilteredData(),
+            "data" => $dados
+        );
+        echo json_encode($output);
     }
 
 }

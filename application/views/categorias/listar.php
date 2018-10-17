@@ -7,9 +7,41 @@
     <title>CRUD CodeIgniter</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#myTable').DataTable();  
+            $('#myTable').DataTable({  
+                "processing": true,
+                "serverSide": true,
+                "order": [],
+            "ajax": {
+                "url": "<?= base_url().'categoria/pega_dados'?>",
+                "type": "POST"
+            },
+            "columnsDefs": [
+                    {
+                        "target": [2, 3],
+                        "orderable":false
+                    }
+            ],
+            "language": {
+                    "zeroRecords": "Nada encontrado - desculpe",
+                    "info": "Mostrando pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "Nenhum registro disponivel",
+                    "infoFiltered": "(filtrado do total de _MAX_ registros)",
+                    "paginate": {
+                        "first":      "Primeira",
+                        "last":       "Ultima",
+                        "next":       "Proxima",
+                        "previous":   "Anterior"
+                    },
+                    "search":         "Pesquisar:",
+                    "loadingRecords": "Carregando...",
+                    "processing":     "Processando..."
+            },
+                "lengthChange": false,
+                "pageLength": 5
+            });
         });
     </script>
 </head>
@@ -24,18 +56,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php
-        if( !empty($categorias) ) {
-            foreach($categorias as $c): ?>
-            <tr>
-                <td><?= $c['categoria'] ?></td>
-                <td><a href="<?php echo base_url() . 'categoria/alterar/' . $c['id_categoria'] ?>">Editar</a></td>
-                <td><a href="<?php echo base_url() . 'categoria/excluir/' . $c['id_categoria'] ?>">Excluir</a></td>
-            </tr>
-        <?php
-            endforeach;
-        }
-        ?>
+        
     </tbody>
     </table>
     

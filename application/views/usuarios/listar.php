@@ -7,14 +7,53 @@
     <title>CRUD CodeIgniter</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#myTable').DataTable();  
+            carregar();
+
+            function carregar() {
+                $('#myTable').DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "order": [],
+                    "ajax": {
+                        "url": "<?= base_url().'usuario/pega_dados'?>",
+                        "type": "POST",
+                        "data": function(data)
+                            {
+                            	data.subcategoria = $('#subcategoriaSearch').val();
+                            	data.categoria = $('#categoriaSearch').val();
+                            }
+                        },
+                    "columnDefs": [ {
+                        "targets": [ 4, 5, 6, 7 ],
+                         "orderable": false
+                    } ],
+                "language": {
+                        "zeroRecords": "Nada encontrado - desculpe",
+                        "info": "Mostrando pagina _PAGE_ de _PAGES_",
+                        "infoEmpty": "Nenhum registro disponivel",
+                        "infoFiltered": "(filtrado do total de _MAX_ registros)",
+                        "paginate": {
+                            "first":      "Primeira",
+                            "last":       "Ultima",
+                            "next":       "Proxima",
+                            "previous":   "Anterior"
+                        },
+                        "search":         "Pesquisar:",
+                        "loadingRecords": "Carregando...",
+                        "processing":     "Processando..."
+                },
+                    "lengthChange": false,
+                    "pageLength": 5
+                });  
+            }    
         });
     </script>
 </head>
 <body>
-    <h1 style="text-align: center;margin-top:200px;">Lista de categorias</h1>
+    <h1 style="text-align: center;margin-top:200px;">Lista de usuários</h1>
     <table class="table" id="myTable">
     <thead >
         <tr>
@@ -29,23 +68,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php
-        if(!empty($usuarios)) {
-            foreach($usuarios as $usuario): ?>
-            <tr>
-                <td><?= $usuario['nome'] ?></td>
-                <td><?= $usuario['email'] ?></td>
-                <td><?= $usuario['data_nasc'] ?></td>
-                <td><?= $usuario['categoria'] ?></td>
-                <td><?= $usuario['subcategoria'] ?></td>
-                <td><img style="height:50px;" src="<?= $usuario['imagem'] ?>" alt="thumb"></td>
-                <td><a href="<?php echo base_url() . 'usuario/alterar/' . $usuario['id_usuario'] ?>">Editar</a></td>
-                <td><a href="<?php echo base_url() . 'usuario/excluir/' . $usuario['id_usuario'] ?>">Excluir</a></td>
-            </tr>
-        <?php
-            endforeach;
-        }
-        ?>
+    
     </tbody>
     </table>
     <?php if ($this->session->flashdata('success') == TRUE): ?>

@@ -33,3 +33,7 @@ $route['recortar'] = "UsuariosController/Recortar";
 $route['visualizacao'] = 'UsuariosController/Visualizacao';
 
 $route['enviarEmail'] = 'UsuariosController/EnviarEmailUsuario';
+
+$route['usuario/pega_dados'] = 'UsuariosController/PegaDados';
+$route['categoria/pega_dados'] = 'CategoriasController/PegaDados';
+$route['subcategoria/pega_dados'] = 'SubcategoriasController/PegaDados';

@@ -22,7 +22,7 @@ class CategoriasController extends CI_Controller{
 				$this->session->set_flashdata('error', 'Não foi possível inserir o contato.');
 			}else{
 				$this->session->set_flashdata('success', 'Contato inserido com sucesso.');
-				$this->template->load('layout', 'inicio');
+				$this->index();
 			}
 		}else{
 			$this->session->set_flashdata('error', validation_errors('<p>','</p>'));
@@ -50,7 +50,7 @@ class CategoriasController extends CI_Controller{
                 $this->template->load('layout', 'inicio');
 			}else{
 				$this->session->set_flashdata('success', 'Contato atualizado com sucesso.');
-                $this->template->load('layout', 'inicio');
+                $this->index();
 			}
 		}else{
             $this->session->set_flashdata('error', validation_errors());
@@ -72,7 +72,7 @@ class CategoriasController extends CI_Controller{
 			$this->session->set_flashdata('error', '<p>Não foi possível excluir o contato.</p>');
         }
 		
-		$this->Index();
+		$this->index();
 	}
 
 	private function Validar($operacao = 'insert'){
@@ -91,7 +91,25 @@ class CategoriasController extends CI_Controller{
 		return $this->form_validation->run();
 	}
 
-
+	public function PegaDados() {
+        $pegadados = $this->CategoriaModel->criar_datatable();
+        $dados = array();
+        foreach ($pegadados as $row) {
+            $sub_dados = array();
+            $sub_dados[] = $row->categoria;
+            $sub_dados[] = "<a href='".base_url('categoria/alterar')."/".$row->id_categoria."' role='button' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span></a>";
+            $sub_dados[] = "<a href='".base_url('categoria/excluir')."/".$row->id_categoria."' role='button' class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span></a>";
+            $dados[] = $sub_dados;
+        }
+        
+        $output = array (
+            "draw"  => intval($_POST["draw"]),
+            "recordsTotal" => $this->CategoriaModel->getAllData(), 
+            "recordsFiltered" => $this->CategoriaModel->getFilteredData(),
+            "data" => $dados
+        );
+        echo json_encode($output);
+    }
 
     
 }

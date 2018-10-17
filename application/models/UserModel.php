@@ -2,6 +2,9 @@
     defined('BASEPATH') OR exit('No direct script access allowed');
 
     class UserModel extends MY_Model{
+      var $select_columns = array ("id_usuario" ,"nome", "email", "data_nasc", "categoria",  "subcategoria", "imagem");
+      var $order_columns = array ("id_usuario" ,"nome", "email", "data_nasc", "categoria", "subcategoria", "imagem");
+
         function __construct() {
             parent::__construct();
             $this->table = 'users';
@@ -71,12 +74,33 @@
             }
           }
 
-        
-
-
+          function criar_query()
+          {
+              $this->db->select($this->select_columns);
+              $this->db->from($this->table, 'subcategorias', 'categorias');
+              $this->db->join('subcategorias', 'subcategoria_fk = id_subcategoria');
+              $this->db->join('categorias', 'categoria_fk = id_categoria');
+              if(isset($_POST["search"]["value"]))
+              {
+                  $this->db->or_like("nome", $_POST["search"]["value"]);
+                  $this->db->or_like("email", $_POST["search"]["value"]);
+                  $this->db->or_like("data_nasc", $_POST["search"]["value"]);
+                  $this->db->or_like("categoria", $_POST["search"]["value"]);
+                  $this->db->or_like("subcategoria", $_POST["search"]["value"]);
+              }
+              if(isset($_POST["order"]))
+              {
+                  $this->db->order_by($this->order_columns[$_POST["order"]["0"]["column"]]
+                          , $_POST["order"]["0"]["dir"]);
+              }
+              else
+              {
+                  $this->db->order_by("id_usuario", "desc");
+              }
+          } 
           
-        /*function criar_datatable()
-      {
+    function criar_datatable()
+    {
         $this->criar_query();
         if($_POST["length"] != -1)
         {
@@ -92,5 +116,12 @@
         $query = $this->db->get();
         return $query->num_rows();
     }
-    */
+        
+    function getAllData()
+    {
+        $this->db->select("*");
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
     }
+
+}

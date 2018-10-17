@@ -105,4 +105,26 @@ class SubcategoriasController extends CI_Controller{
 		//$this->form_validation->set_rules('email', 'Email', $rules['email']);
 		return $this->form_validation->run();
 	}
+
+	public function PegaDados()
+    {
+        $pegadados = $this->SubcategoriaModel->criar_datatable();
+        $dados = array();
+        foreach ($pegadados as $row) {
+            $sub_dados = array();
+            $sub_dados[] = $row->subcategoria;
+            $sub_dados[] = $row->categoria;
+            $sub_dados[] = "<a href='".base_url('subcategoria/alterar')."/".$row->id_subcategoria."' role='button' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span></a>";
+            $sub_dados[] = "<a href='".base_url('subcategoria/excluir')."/".$row->id_subcategoria."' role='button' class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span></a>";
+            $dados[] = $sub_dados;
+        }
+        
+        $output = array (
+            "draw"  => intval($_POST["draw"]),
+            "recordsTotal" => $this->SubcategoriaModel->getAllData(), 
+            "recordsFiltered" => $this->SubcategoriaModel->getFilteredData(),
+            "data" => $dados
+        );
+        echo json_encode($output);
+    }
 }

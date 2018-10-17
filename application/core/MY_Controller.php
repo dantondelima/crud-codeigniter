@@ -14,7 +14,7 @@ class MY_Controller extends CI_Controller{
         $this->config['newline']   = "\r\n";
     }
     
-    public function EnviarEmailUsuario($email, $nome, $categoria, $subcategoria, $data, $imagem, $descricao) {
+    public function EnviarEmailUsuario($email, $nome, $categoria, $subcategoria, $data, $imagem, $descricao, $hora) {
         $this->carregarLibrary();
         $this->email->initialize($this->config);
         $this->email->from('testekbr@gmail.com', 'KBRTEC-TESTES');
@@ -30,9 +30,10 @@ class MY_Controller extends CI_Controller{
             ,   'subcategoria' => $subcategoria
             ,   'descricao' => $descricao
             ,   'imagem' => $imagemNoCorpo
-            ,   
+            ,   'hora' => $hora
         ];
         $this->email->message($this->load->view('usuarios/email', $dados, TRUE));
         return $this->email->send(); 
     }
 }
+

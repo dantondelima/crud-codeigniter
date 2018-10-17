@@ -85,5 +85,4 @@
             $this->db->where('id_'.$tabela, $id);
             return $this->db->delete($this->table);
           }
-        
     }
