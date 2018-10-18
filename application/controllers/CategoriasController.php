@@ -40,9 +40,8 @@ class CategoriasController extends CI_Controller{
 
 	public function Atualizar(){
 		$validacao = self::Validar('update');
-		
+		$categoria = $this->input->post();
 		if($validacao){
-			$categoria = $this->input->post();
             $status = $this->CategoriaModel->Atualizar($categoria['id_categoria'], $categoria, 'categoria');
 			if(!$status){
 				$dados['categoria'] = $this->CategoriaModel->GetById($categoria['id_categoria'], 'categoria');
@@ -53,8 +52,9 @@ class CategoriasController extends CI_Controller{
                 $this->index();
 			}
 		}else{
+			$dados['categoria'] = $this->CategoriaModel->GetById($categoria['id_categoria'], 'categoria');
             $this->session->set_flashdata('error', validation_errors());
-            $this->template->load('layout', 'inicio');
+            $this->template->load('layout', 'categorias/alterar', $dados);
 		}
 	}
 

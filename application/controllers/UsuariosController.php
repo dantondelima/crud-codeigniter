@@ -3,8 +3,8 @@ class UsuariosController extends MY_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->library(['session','upload','image_lib']);
-        $this->load->library('ckeditor');
-        $this->load->library('ckfinder');
+        $this->load->library('CKEditor');
+        $this->load->library('CKFinder');
         $this->ckeditor->basePath = base_url().'assets/ckeditor/';
         $this->ckeditor->config['language'] = 'pt';
         $this->ckeditor->config['width'] = '950px';

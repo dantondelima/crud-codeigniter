@@ -15,17 +15,19 @@ class SubcategoriasController extends CI_Controller{
 
     public function Salvar(){
 		$validacao = self::Validar();
-
+		$subcategoria = $this->input->post();
 		if($validacao){
 			$subcategoria = $this->input->post();
 			$status = $this->SubcategoriaModel->Inserir($subcategoria);
 			if(!$status){
 				$this->session->set_flashdata('error', 'Não foi possível inserir o contato.');
 			}else{
-				$this->session->set_flashdata('success', 'Contato inserido com sucesso.');
-				$this->template->load('layout', 'inicio');			}
+				$this->session->set_flashdata('success', 'registro inserido com sucesso.');
+				$this->template->load('layout', 'inicio');			
+			}
 		}else{
 			$this->session->set_flashdata('error', validation_errors('<p>','</p>'));
+			$this->template->load('layout', 'subcategorias/cadastrar');
         }
     }
 
@@ -43,10 +45,9 @@ class SubcategoriasController extends CI_Controller{
     public function Atualizar(){
 		// Realiza o processo de validação dos dados
         $validacao = self::Validar('update');
+        $subcategoria = $this->input->post();
 		if(!$validacao){
 			// Recupera os dados do formulário
-            $subcategoria = $this->input->post();
-           
 			// Atualiza os dados no banco recuperando o status dessa operação
             $status = $this->SubcategoriaModel->Atualizar($subcategoria['id_subcategoria'], $subcategoria, 'subcategoria');
 			// Checa o status da operação gravando a mensagem na seção
@@ -55,13 +56,13 @@ class SubcategoriasController extends CI_Controller{
                 $this->session->set_flashdata('error', 'Não foi possível atualizar o contato.');
                 $this->template->load('layout', 'subcategorias/alterar', $dados);
 			}else{
-				$this->session->set_flashdata('success', 'Contato atualizado com sucesso.');
-                // Redireciona o usuário para a home
-                $this->template->load('layout', 'inicio');
+				$this->session->set_flashdata('success', 'registro atualizado com sucesso.');
+               	$this->index();
 			}
 		}else{
+			$dados['subcategoria'] = $this->SubcategoriaModel->GetById($subcategoria['id_subcategoria'], 'subcategoria');
             $this->session->set_flashdata('error', validation_errors());
-            $this->template->load('layout', 'inicio');
+            $this->template->load('layout', 'subcate', $dados);
 		}
 	}
 
@@ -75,7 +76,7 @@ class SubcategoriasController extends CI_Controller{
 		$status = $this->SubcategoriaModel->Excluir($id, 'subcategoria');
 		// Checa o status da operação gravando a mensagem na seção
 		if($status){
-			$this->session->set_flashdata('success', '<p>Contato excluído com sucesso.</p>');
+			$this->session->set_flashdata('success', '<p>registro excluído com sucesso.</p>');
 		}else{
 			$this->session->set_flashdata('error', '<p>Não foi possível excluir o contato.</p>');
         }
@@ -93,15 +94,19 @@ class SubcategoriasController extends CI_Controller{
 		switch($operacao){
 			case 'insert':
 				$rules['subcategoria'] = array('trim', 'required', 'min_length[3]');
+				$rules['categoria'] = array('trim', 'required');
 				break;
 			case 'update':
 				$rules['subcategoria'] = array('trim', 'required', 'min_length[3]');
+                $rules['categoria'] = array('trim', 'required');
 				break;
 			default:
 				$rules['subcategoria'] = array('trim', 'required', 'min_length[3]');
+                $rules['categoria'] = array('trim', 'required');
 				break;
 		}
 		$this->form_validation->set_rules('subcategoria', 'subcategoria', $rules['subcategoria']);
+		$this->form_validation->set_rules('categoria', 'Categoria', $rules['categoria']);
 		//$this->form_validation->set_rules('email', 'Email', $rules['email']);
 		return $this->form_validation->run();
 	}

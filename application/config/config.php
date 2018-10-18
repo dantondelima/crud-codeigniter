@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$config['base_url'] = 'http://localhost/crud-codeigniter/';
+$config['base_url'] = 'http://crudcodeigniter-danton.000webhostapp.com/';
 
 $config['index_page'] = "";
 

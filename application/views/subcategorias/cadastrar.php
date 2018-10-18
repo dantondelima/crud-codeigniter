@@ -29,7 +29,7 @@
                 </div>
                 <div>
                     <div>
-                    <select class="form-control" name="id_categoria" id="categoria" placeholder="Categoria">
+                    <select class="form-control" name="categoria_id" id="categoria" placeholder="Categoria">
                     </select> 
                     </div>
                     <input style="margin-top:10px" class="btn btn-primary" type="submit" value="Adicionar"/>
@@ -37,5 +37,17 @@
             </div>
         </form>
     </div>
+    <?php if ($this->session->flashdata('error') == TRUE): ?>
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong><?php echo $this->session->flashdata('error'); ?></strong>
+    </div>
+<?php endif; ?>
+<?php if ($this->session->flashdata('success') == TRUE): ?>
+    <div class="alert alert-success alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong><?php echo $this->session->flashdata('success'); ?></strong>
+    </div>
+<?php endif;?>
 </body>
 </html>

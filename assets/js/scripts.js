@@ -24,11 +24,11 @@ $(document).ready(function(){
   }
 });
 
-$('#recortar-imagem').click(function(){
-  if (parseInt($('#wcrop').val())) return true;
-  alert('Selecione a área de corte para continuar.');
-  return false;
-});
+			$('#recortar-imagem').click(function(){
+			  	if (parseInt($('#wcrop').val())) return true;
+    			alert('Selecione a área de corte para continuar.');
+    			return false;
+			});
 })
 
 function atualizaCoordenadas(c)
